@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -36,7 +36,7 @@
 		g = drawSmiley(createjs.Graphics.getHSL(Math.random() * 360, 100, Math.random() * 50 + 30));
 
 		for (var i = 0; i < 141; i++) {
-			// share the Graphics instance between all of the shapes:
+		    // share the Graphics instance between all of the shapes重用Graphics对象绘制多个形状:
 			var shape = new createjs.Shape(g);
 			shape.scaleX = shape.scaleY = i / 400 + 0.4;
 			shape.x = Math.cos(i / 4) * i * 3.75 + canvas.width / 2;
@@ -83,7 +83,7 @@
 <body onload="init()">
 
 <header class="EaselJS">
-	<h1>Graphics Re-use</h1>
+	<h1>Graphics 重用</h1>
 
 	<p>This example shows how a single <code>Graphics</code> object can be
 		reused between multiple <code>Shape</code> instances.

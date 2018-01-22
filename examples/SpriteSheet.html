@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -77,8 +77,9 @@
 		stage.addChild(sky, hill, hill2, ground, grant);
 		stage.addEventListener("stagemousedown", handleJumpStart);
 
-		createjs.Ticker.timingMode = createjs.Ticker.RAF;
-		createjs.Ticker.addEventListener("tick", tick);
+		createjs.Ticker.timingMode = createjs.Ticker.RAF; // 设置循环方法，可以是requestAnimationFrame或者是setTimeout
+		// createjs.Ticker.setFPS(60); // 舞台帧率控制
+		createjs.Ticker.addEventListener("tick", tick); // 开始监听每一帧所有的事件
 	}
 
 	function handleJumpStart() {

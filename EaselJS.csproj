@@ -1,0 +1,259 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F684517A-C9C2-4021-A19E-905725A7B6D8}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EaselJS</RootNamespace>
+    <AssemblyName>EaselJS</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="examples\AlphaMaskReveal.html" />
+    <Content Include="examples\APITest.html" />
+    <Content Include="examples\BarGraph.html" />
+    <Content Include="examples\BitmapText.html" />
+    <Content Include="examples\ButtonHelper.html" />
+    <Content Include="examples\Cache.html" />
+    <Content Include="examples\Cache_update.html" />
+    <Content Include="examples\Cache_vday.html" />
+    <Content Include="examples\CurveTo.html" />
+    <Content Include="examples\DOMElement.html" />
+    <Content Include="examples\DoubleClickTest.html" />
+    <Content Include="examples\DragAndDrop.html" />
+    <Content Include="examples\DragAndDrop_hitArea.html" />
+    <Content Include="examples\EventBubbling.html" />
+    <Content Include="examples\Filters.html" />
+    <Content Include="examples\Filters_animated.html" />
+    <Content Include="examples\Filters_input.html" />
+    <Content Include="examples\Filters_simple.html" />
+    <Content Include="examples\Game\Game.html" />
+    <Content Include="examples\Game\Ship.js" />
+    <Content Include="examples\Game\sounds\break.mp3" />
+    <Content Include="examples\Game\sounds\death.mp3" />
+    <Content Include="examples\Game\sounds\music.mp3" />
+    <Content Include="examples\Game\sounds\shot.mp3" />
+    <Content Include="examples\Game\sounds\spawn.mp3" />
+    <Content Include="examples\Game\SpaceRock.js" />
+    <Content Include="examples\GlobalToLocal1.html" />
+    <Content Include="examples\GlobalToLocal2.html" />
+    <Content Include="examples\GraphicsReuse.html" />
+    <Content Include="examples\GraphicsTest.html" />
+    <Content Include="examples\GraphicsTestTiny.html" />
+    <Content Include="examples\Graphics_setStrokeDash.html" />
+    <Content Include="examples\Graphics_simple.html" />
+    <Content Include="examples\Graphics_winding.html" />
+    <Content Include="examples\HelloWorld.html" />
+    <Content Include="examples\Icons.html" />
+    <Content Include="examples\LocalToGlobal.html" />
+    <Content Include="examples\Masks.html" />
+    <Content Include="examples\MovieClip.html" />
+    <Content Include="examples\RollOverMouseOver.html" />
+    <Content Include="examples\Sparkles.html" />
+    <Content Include="examples\SpriteSheet.html" />
+    <Content Include="examples\SpriteSheetBuilder.html" />
+    <Content Include="examples\SpriteSheetBuilderMC\gunnertron_g.js" />
+    <Content Include="examples\SpriteSheetBuilderMC\SpriteSheetBuilder_MovieClip.html" />
+    <Content Include="examples\SpriteSheet_simple.html" />
+    <Content Include="examples\SpriteSheet_tileset.html" />
+    <Content Include="examples\Text_links.html" />
+    <Content Include="examples\Text_multiline.html" />
+    <Content Include="examples\Text_simple.html" />
+    <Content Include="examples\Transform.html" />
+    <Content Include="examples\Transform_simple.html" />
+    <Content Include="examples\TwoStages.html" />
+    <Content Include="examples\WebGL\Benchmark.html" />
+    <Content Include="examples\WebGL\Filters_GL-C2D.html" />
+    <Content Include="examples\WebGL\Filters_GL-GL.html" />
+    <Content Include="examples\WebGL\HelloWorld.html" />
+    <Content Include="examples\WebGL\Runners.html" />
+    <Content Include="examples\WebGL\Sparkles.html" />
+    <Content Include="examples\WebGL\SystemInfo.html" />
+    <Content Include="examples\WebGL\TwoStages.html" />
+    <Content Include="lib\easeljs-NEXT.js" />
+    <Content Include="lib\easeljs-NEXT.min.js" />
+    <Content Include="lib\easeljs.js" />
+    <Content Include="lib\easeljs.min.js" />
+    <Content Include="src\createjs\events\Event.js" />
+    <Content Include="src\createjs\events\EventDispatcher.js" />
+    <Content Include="src\createjs\utils\deprecate.js" />
+    <Content Include="src\createjs\utils\extend.js" />
+    <Content Include="src\createjs\utils\indexOf.js" />
+    <Content Include="src\createjs\utils\promote.js" />
+    <Content Include="src\createjs\utils\Ticker.js" />
+    <Content Include="src\easeljs\display\Bitmap.js" />
+    <Content Include="src\easeljs\display\BitmapText.js" />
+    <Content Include="src\easeljs\display\Container.js" />
+    <Content Include="src\easeljs\display\DisplayObject.js" />
+    <Content Include="src\easeljs\display\DOMElement.js" />
+    <Content Include="src\easeljs\display\Graphics.js" />
+    <Content Include="src\easeljs\display\MovieClip.js" />
+    <Content Include="src\easeljs\display\Shadow.js" />
+    <Content Include="src\easeljs\display\Shape.js" />
+    <Content Include="src\easeljs\display\Sprite.js" />
+    <Content Include="src\easeljs\display\SpriteSheet.js" />
+    <Content Include="src\easeljs\display\Stage.js" />
+    <Content Include="src\easeljs\display\StageGL.js" />
+    <Content Include="src\easeljs\display\Text.js" />
+    <Content Include="src\easeljs\events\MouseEvent.js" />
+    <Content Include="src\easeljs\filters\AlphaMapFilter.js" />
+    <Content Include="src\easeljs\filters\AlphaMaskFilter.js" />
+    <Content Include="src\easeljs\filters\BitmapCache.js" />
+    <Content Include="src\easeljs\filters\BlurFilter.js" />
+    <Content Include="src\easeljs\filters\ColorFilter.js" />
+    <Content Include="src\easeljs\filters\ColorMatrix.js" />
+    <Content Include="src\easeljs\filters\ColorMatrixFilter.js" />
+    <Content Include="src\easeljs\filters\Filter.js" />
+    <Content Include="src\easeljs\geom\DisplayProps.js" />
+    <Content Include="src\easeljs\geom\Matrix2D.js" />
+    <Content Include="src\easeljs\geom\Point.js" />
+    <Content Include="src\easeljs\geom\Rectangle.js" />
+    <Content Include="src\easeljs\ui\ButtonHelper.js" />
+    <Content Include="src\easeljs\ui\Touch.js" />
+    <Content Include="src\easeljs\utils\SpriteSheetBuilder.js" />
+    <Content Include="src\easeljs\utils\SpriteSheetUtils.js" />
+    <Content Include="src\easeljs\utils\UID.js" />
+    <Content Include="src\easeljs\utils\VideoBuffer.js" />
+    <Content Include="src\easeljs\utils\WebGLInspector.js" />
+    <Content Include="src\easeljs\version.js" />
+    <Content Include="Web.config" />
+    <Content Include="_assets\art\daisy.png" />
+    <Content Include="_assets\art\flowers.jpg" />
+    <Content Include="_assets\art\ground.png" />
+    <Content Include="_assets\art\hill1.png" />
+    <Content Include="_assets\art\hill2.png" />
+    <Content Include="_assets\art\loading.gif" />
+    <Content Include="_assets\art\logo_createjs.svg" />
+    <Content Include="_assets\art\robojs\robojs.png" />
+    <Content Include="_assets\art\robojs\robojs1.png" />
+    <Content Include="_assets\art\robojs\robojs10.png" />
+    <Content Include="_assets\art\robojs\robojs2.png" />
+    <Content Include="_assets\art\robojs\robojs3.png" />
+    <Content Include="_assets\art\robojs\robojs4.png" />
+    <Content Include="_assets\art\robojs\robojs5.png" />
+    <Content Include="_assets\art\robojs\robojs6.png" />
+    <Content Include="_assets\art\robojs\robojs7.png" />
+    <Content Include="_assets\art\robojs\robojs8.png" />
+    <Content Include="_assets\art\robojs\robojs9.png" />
+    <Content Include="_assets\art\robot.png" />
+    <Content Include="_assets\art\sky.png" />
+    <Content Include="_assets\art\spritesheet_button.png" />
+    <Content Include="_assets\art\spritesheet_font.png" />
+    <Content Include="_assets\art\spritesheet_grant.png" />
+    <Content Include="_assets\art\spritesheet_icons.png" />
+    <Content Include="_assets\art\spritesheet_sparkle.png" />
+    <Content Include="_assets\art\tmw_desert_spacing.png" />
+    <Content Include="_assets\art\VectorButton.js" />
+    <Content Include="_assets\audio\bionic.mp3" />
+    <Content Include="_assets\css\examples.css" />
+    <Content Include="_assets\css\prism.css" />
+    <Content Include="_assets\css\shared.css" />
+    <Content Include="_assets\js\examples.js" />
+    <Content Include="_assets\js\prism.js" />
+    <Content Include="_assets\js\Slider.js" />
+    <Content Include="_assets\libs\dat.gui.min.js" />
+    <Content Include="_assets\libs\preloadjs-NEXT.min.js" />
+    <Content Include="_assets\libs\soundjs-NEXT.min.js" />
+    <Content Include="_assets\libs\stats.min.js" />
+    <Content Include="_assets\libs\tweenjs-NEXT.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="examples\Game\sounds\break.ogg" />
+    <Content Include="examples\Game\sounds\death.ogg" />
+    <Content Include="examples\Game\sounds\music.ogg" />
+    <Content Include="examples\Game\sounds\shot.ogg" />
+    <Content Include="examples\Game\sounds\spawn.ogg" />
+    <Content Include="examples\WebGL\README.md" />
+    <Content Include="lib\README.md" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <Content Include="_assets\README.md" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>64472</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:64472/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

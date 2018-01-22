@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -51,7 +51,7 @@
 		var container = new createjs.Container();
 		stage.addChild(container);
 
-		// create a shape that represents the center of the daisy image:
+		// create a shape that represents the center of the daisy image: 创建一个形状用作菊花位图的点击区域，自定义点击区域
 		var hitArea = new createjs.Shape();
 		hitArea.graphics.beginFill("#FFF").drawEllipse(-11, -14, 24, 18);
 		// position hitArea relative to the internal coordinate system of the target bitmap instances:
@@ -121,7 +121,7 @@
 
 <body onload="init();">
 <header class="EaselJS">
-	<h1>Drag &amp; Drop With Hit Areas</h1>
+	<h1>鼠标或者触屏拖放，但点击区域是自定义的</h1>
 
 	<p>This example is the same as the DragAndDrop example, except it uses
 		<code>hitArea</code> to make only the center part of the daisy respond

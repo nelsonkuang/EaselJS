@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -13,16 +13,23 @@
 	  http://code.createjs.com -->
 
 <script id="editable">
-	function init() {
+    function init() {
+        // 获得屏宽
+        var screenWidth = window.innerWidth > 960 ? 960 : window.innerWidth;
+
 		// get a reference to the canvas we'll be working with:
-		var canvas = document.getElementById("testCanvas");
+        var canvas = document.getElementById("testCanvas");
+        canvas.setAttribute('width', screenWidth); // 设置屏宽
 
 		// create a stage object to work with the canvas. This is the top level node in the display list:
 		var stage = new createjs.Stage(canvas);
 
 		// Create a new Text object:
-		var text = new createjs.Text("Hello World!", "36px Arial", "#777");
+		var text = new createjs.Text();
+		text.font = 'bold 18px georgia,serif';
+		text.color = '#ff5500'
 		text.textAlign = "center";
+		text.text = "Hello World! CreateJs 我来了，我要开始学习用你来制作小游戏了！！";
 
 		// add the text as a child of the stage. This means it will be drawn any time the stage is updated
 		// and that its transformations will be relative to the stage coordinates:

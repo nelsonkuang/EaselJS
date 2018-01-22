@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>EaselJS Example: Rollovers and Drag & Drop</title>
+	<title>EaselJS Example: Rollovers and Drag & Drop 鼠标悬停、按下、离开和拖放范例</title>
 
 	<link href="../_assets/css/shared.css" rel="stylesheet" type="text/css"/>
 	<link href="../_assets/css/examples.css" rel="stylesheet" type="text/css"/>
@@ -20,18 +20,18 @@
 
 	function init() {
 		examples.showDistractor();
-		// create stage and point it to the canvas:
+		// create stage and point it to the canvas: 创建stage并指向canvas
 		canvas = document.getElementById("testCanvas");
 		stage = new createjs.Stage(canvas);
 
-		// enable touch interactions if supported on the current device:
+		// enable touch interactions if supported on the current device: 允许touch
 		createjs.Touch.enable(stage);
 
-		// enabled mouse over / out events
+		// enabled mouse over / out events 允许mouse over和mouse out
 		stage.enableMouseOver(10);
-		stage.mouseMoveOutside = true; // keep tracking the mouse even when it leaves the canvas
+		stage.mouseMoveOutside = true; // keep tracking the mouse even when it leaves the canvas 鼠标离开canvas都要保持跟踪
 
-		// load the source image:
+		// load the source image: 加载完图片后才能执行
 		var image = new Image();
 		image.src = "../_assets/art/daisy.png";
 		image.onload = handleImageLoad;
@@ -47,7 +47,7 @@
 		var container = new createjs.Container();
 		stage.addChild(container);
 
-		// create and populate the screen with random daisies:
+		// create and populate the screen with random daisies: 创建随机大小、随机旋转角度和随机位置的位图
 		for (var i = 0; i < 100; i++) {
 			bitmap = new createjs.Bitmap(image);
 			container.addChild(bitmap);
@@ -88,7 +88,7 @@
 		}
 
 		examples.hideDistractor();
-		createjs.Ticker.addEventListener("tick", tick);
+		createjs.Ticker.addEventListener("tick", tick); // 开始监听canvas并随时按需重画canvas，实现原理是轮询的方式
 	}
 
 	function tick(event) {
@@ -104,7 +104,7 @@
 
 <body onload="init();">
 <header class="EaselJS">
-	<h1>Drag &amp; Drop</h1>
+	<h1>鼠标或者触屏拖放</h1>
 
 	<p>Example of implementing drag &amp; drop using mouse events such as <code>mousedown</code>,
 		<code>mouseup</code>, and <code>pressmove</code>. Some browsers do not

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -21,13 +21,16 @@
 		stage.name = "stage";
 		stage.enableMouseOver(20);
 
-		// Create a simple hierarchy:
+	    // Create a simple hierarchy:简单的层次分级　container - shape - Rect
 		var container = stage.addChild(new createjs.Container()).set({name: "container"});
 
 		var blue = container.addChild(new createjs.Shape()).set({name: "blue", x: 50, y: 100});
 		blue.graphics.beginFill("#00F").drawRect(0, 0, 200, 200);
 		var red = container.addChild(new createjs.Shape()).set({name: "red", x: 100, y: 150});
 		red.graphics.beginFill("#F00").drawRect(0, 0, 100, 100);
+
+		console.log(red); // red shape
+		console.log(blue); // blue shape
 
 		container.addEventListener("mouseover", handleEvt);
 		container.addEventListener("mouseout", handleEvt);
@@ -58,7 +61,7 @@
 <body onload="init();">
 
 <header class="EaselJS">
-	<h1>rollover and mouseover</h1>
+	<h1>鼠标rollover 和 mouseover范例</h1>
 
 	<p>This example demonstrates the difference between <code>rollover</code> /
 		<code>rollout</code> and <code>mouseover</code> / <code>mouseout</code>

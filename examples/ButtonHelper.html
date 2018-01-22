@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -39,7 +39,7 @@
 	function handleImageLoad(evt) {
 		examples.hideDistractor();
 
-		// spritesheet "bitmap" button:
+	    // spritesheet "bitmap" button 用ButtonHelper给自定义的位图精灵物体加上按钮效果:
 		var spriteSheet = new createjs.SpriteSheet({
 													   images: [evt.target],
 													   frames: {width: 300, height: 100},
@@ -49,7 +49,12 @@
 		stage.addChild(bitmapButton).set({x: 50, y: 50});
 		var bitmapHelper = new createjs.ButtonHelper(bitmapButton);
 
-		// movieclip "vector" button:
+		bitmapButton.on('click', function () {
+		    alert('你点击了我啦！');
+		});
+
+
+		// movieclip "vector" button 自定义的矢量动画按钮:
 		var vectorButton = new lib.VectorButton();
 		stage.addChild(vectorButton).set({x: 400, y: 50});
 		var vectorHelper = new createjs.ButtonHelper(vectorButton);
@@ -67,7 +72,7 @@
 
 <body onload="init();">
 <header class="EaselJS">
-	<h1>ButtonHelper Example</h1>
+	<h1>ButtonHelper 使用范例</h1>
 
 	<p>Shows how to use a <code>ButtonHelper</code> with <code>Sprite</code> or
 		<code>MovieClip</code> instances (or anything with a
