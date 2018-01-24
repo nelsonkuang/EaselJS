@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -102,7 +102,7 @@
 			graphics.setStrokeStyle(Math.random() * 20, "round").beginStroke(color);
 			graphics.moveTo(0, 0);
 			lastPt = shape.globalToLocal(_mouseX, _mouseY);
-			graphics.lineTo(lastPt.x, lastPt.y);
+			graphics.lineTo(lastPt.x, lastPt.y); // 使用lineTo画多线
 
 			// draw the new vector line to the canvas:
 			stage.update(event);
