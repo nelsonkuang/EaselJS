@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -51,10 +51,11 @@
 		text.y = 200;
 		stage.addChild(text);
 
-		// shape to draw vector data into:
+        // 三层嵌套 span1 > span2 > shape
+	    // shape to draw vector data into:
 		shape = new createjs.Shape();
 		shape.x = 41;		//position in parent container
-		graphics = shape.graphics;
+		graphics = shape.graphics; // 下面会用到动态在stage里面绘画
 
 		// middle spinner:
 		spin2 = new createjs.Container();
@@ -86,19 +87,19 @@
 							Math.cos((count++) * 0.01) * 180,
 							100,
 							50,
-							1.0);
+							1.0);　// 色彩渐变
 
 			// set up our drawing properties:
 			graphics.setStrokeStyle(Math.random() * 20 + 2, "round").beginStroke(color);
 
 			// start the line at the last position:
-			graphics.moveTo(lastPt.x, lastPt.y);
+			graphics.moveTo(lastPt.x, lastPt.y); // 由上一点的位置
 
 			// calculate the new position in the shape's local coordinate space:
-			lastPt = shape.globalToLocal(_mouseX, _mouseY);
+			lastPt = shape.globalToLocal(_mouseX, _mouseY); // 计算鼠标在形状内的位置
 
 			// draw the line, and close the path:
-			graphics.lineTo(lastPt.x, lastPt.y);
+			graphics.lineTo(lastPt.x, lastPt.y); // 画线到当前位置
 		}
 
 		// update the stage:
@@ -112,7 +113,7 @@
 		_mouseIsDown = true;
 
 		// set up the first point in the new draw, and choose a random color:
-		lastPt = shape.globalToLocal(event.nativeEvent.pageX - canvas.offsetLeft, event.nativeEvent.pageY - canvas.offsetTop);
+		lastPt = shape.globalToLocal(event.nativeEvent.pageX - canvas.offsetLeft, event.nativeEvent.pageY - canvas.offsetTop); // 计算鼠标在形状内的位置
 		//color = "#"+(Math.random()*0xFFFFFF|0).toString(16);
 
 		// clear the cache, so the vector data is drawn each tick:

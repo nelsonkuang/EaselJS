@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 
@@ -8,7 +8,7 @@
 <link href="../_assets/css/shared.css" rel="stylesheet" type="text/css"/>
 <link href="../_assets/css/examples.css" rel="stylesheet" type="text/css"/>
 <link href="../_assets/css/prism.css" rel="stylesheet" type="text/css"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
 <script src="../_assets/js/prism.js"></script>
 
 <script src="../lib/easeljs-NEXT.js"></script>
@@ -186,7 +186,7 @@
 										  });
 
 		var sprite = new createjs.Sprite(ss, "run");
-		sprite.scale = 0.4;
+		sprite.scale = 0.5;
 		stage.addChild(sprite);
 
 		createjs.Ticker.addEventListener("tick", stage);
@@ -263,13 +263,13 @@
 <body>
 
 <header class="EaselJS">
-	<h1>API Test</h1>
+	<h1>API Test | API测试</h1>
 
 	<p>Demonstrates many of the visual APIs.</p>
 </header>
 
-<div style="overflow: scroll;" class="content" id="wrap">
-	<div id="canvasDiv" style=" padding-left:25px; float: left; height: 150px"></div>
+<div style="overflow: auto;height:auto" class="content" id="wrap">
+	<div id="canvasDiv" style=" padding-left:25px; float: left; height: auto"></div>
 </div>
 
 </body>

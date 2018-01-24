@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -26,34 +26,34 @@
 		circle.graphics.beginFill("#F00").drawCircle(0, 0, 30).beginFill("#C00").drawCircle(0, 0, 10);
         //By default swapping between Stage for StageGL will not allow for vector drawing operation such as BitmapFill, useless you cache your shape.
 		circle.cache(-30, -30, 60, 60);
-		circle.setTransform(100, 90);
+		circle.setTransform(100, 90); // 画两圆，tick时不重绘
 
-		var square = new createjs.Container();
+		var square = new createjs.Container(); // 画正方形
 		var squareBg = square.addChild(new createjs.Shape());
-		squareBg.graphics.beginFill("#00F").drawRect(0, 0, 80, 80);
+		squareBg.graphics.beginFill("#00F").drawRect(0, 0, 80, 80);　// 画正方形背景
 
-		var squareFld = square.addChild(new createjs.Text("1", "bold 72px Arial", "#9BF"));
+		var squareFld = square.addChild(new createjs.Text("1", "bold 72px Arial", "#9BF"));　// 画1
 		squareFld.textBaseline = "top";
 		squareFld.textAlign = "center";
 		squareFld.x = 40;
 		square.setTransform(150, 50);
 		// we'll define the bounds of this shape here, and it will be used when we addFrame:
-		square.bounds = new createjs.Rectangle(0, 0, 80, 80);
+		square.bounds = new createjs.Rectangle(0, 0, 80, 80); // 自定义边界( x  y  width  height )
         //By default swapping between Stage for StageGL will not allow for vector drawing operation such as BitmapFill, useless you cache your shape.
         square.cache(-0, -0, 80, 80);
 
-		stage.addChild(circle, square);
-
+		stage.addChild(circle, square); // 把左上角圆和第一行的方形(开始数字为1，但后面cache改变最后为4)添加到Stage显示
+       
 		// create the sprite sheet builder:
-		var builder = new createjs.SpriteSheetBuilder();
+		var builder = new createjs.SpriteSheetBuilder(); // 创建SpriteSheetBuilder
 
 		// add the circle as a frame, specify the bounds to draw, and grab the frame index:
-		var index = builder.addFrame(circle, new createjs.Rectangle(-30, -30, 60, 60));
+		var index = builder.addFrame(circle, new createjs.Rectangle(-30, -30, 60, 60));　// 创建circle帧
 		// add a named animation using the frame index:
-		builder.addAnimation("circle", index);
+		builder.addAnimation("circle", index); // 创建circle的animation
 
 		// add the square as a sequence of frames, each with a different number in the text field:
-		var frames = [];
+		var frames = []; // 创建square帧
 		for (var i = 0; i < 5; i++) {
 			// we're defining a setup function that will update the text before each frame draw.
 			// the setup function will be called right before the draw, and passed the setup params "i":
@@ -68,26 +68,27 @@
 		}
 		// create an animation named square that comprises all of the frames we just added:
 		// we're also telling it to loop the animation and setting a frequency so it updates every 8 ticks:
-		builder.addAnimation("square", frames, true, 8);
+		builder.addAnimation("square", frames, true, 8); // 创建square集的animation
 
 		// run the build operation, and grab the resulting sprite sheet:
 		// we could also do this asynchronously with buildAsync(...)
-		var spriteSheet = builder.build();
+		var spriteSheet = builder.build(); // 构建spriteSheet
 
 		// create our bitmap animations using the generated sprite sheet, and put them on stage:
 		var circle2 = new createjs.Sprite(spriteSheet, "circle");
 		circle2.setTransform(100, 90 + 200);
-		stage.addChild(circle2);
+		stage.addChild(circle2);  // 把左下角圆添加到Stage显示
 
 		var square2 = new createjs.Sprite(spriteSheet, "square");
 		square2.setTransform(150, 50 + 200);
-		stage.addChild(square2);
-
+		stage.addChild(square2); // 把第三行右边的方形(数字为0~4的轮播帧动画)添加到Stage显示
+	    
 		// add in the generated spritesheet image for demo purposes:
-		stage.addChild(new createjs.Bitmap(spriteSheet._images[0])).set({x: 75, y: 150});
-
+		stage.addChild(new createjs.Bitmap(spriteSheet._images[0])).set({ x: 75, y: 150 }); // 把用SpriteSheetBuilder创建的位图完整整张在第二行显示出来
+	    /**/
 		// we want to do some work before we update the canvas,
-		// otherwise we could use Ticker.addEventListener("tick", stage);
+	    // otherwise we could use Ticker.addEventListener("tick", stage);
+		createjs.Ticker.framerate = 16; // 通用的帧频率，每秒播放16帧
 		createjs.Ticker.addEventListener("tick", stage);
 	}
 </script>
@@ -96,7 +97,7 @@
 <body onload="init();">
 
 <header class="EaselJS">
-	<h1>SpriteSheetBuilder Sample</h1>
+	<h1 style="line-height:1.5;text-transform:none;">SpriteSheetBuilder Sample<br />使用 SpriteSheetBuilder 创建精灵集</h1>
 
 	<p>Using <code>SpriteSheetBuilder</code> to generate
 		<code>SpriteSheet</code> instances at run time. The top row are the

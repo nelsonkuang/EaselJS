@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -26,20 +26,20 @@
 
 		// Additional draw calls are made to the same shape, but using reverse winding.
 		// Change the winding to vary the results.
-		shape.graphics.arc(160, 160, 110, 0, Math.PI * 2, true).closePath(); // Subtracts from the square
-		shape.graphics.arc(330, 240, 110, 0, Math.PI * 2, true).closePath(); // Subtracts from the square, but ADDs to the first circle
-
+		shape.graphics.arc(160, 160, 110, 0, Math.PI * 2, true).closePath(); // Subtracts from the square 由方形取一个圆出来
+		shape.graphics.arc(330, 240, 110, 0, Math.PI * 2, true).closePath(); // Subtracts from the square, but ADDs to the first circle 由方形及上一个圆取一个圆出来，合并路径
+	    
 		// Use the same graphics to make another Shape
 		var mask = new createjs.Shape(shape.graphics);
 		// Create a bitmap, and mask it using the compound shape
 		var bmp = new createjs.Bitmap("../_assets/art/flowers.jpg");
 		bmp.mask = mask;
 		stage.addChild(bmp);
-
+	    
 		// Move them over so we can see them
 		bmp.x = 470;
 		mask.x = 470;
-
+	    /**/
 		createjs.Ticker.addEventListener("tick", stage);
 	}
 </script>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -41,15 +41,15 @@
 
 		// because we didn't specify any named animations, we have to reference frames by number:
 		icon1.gotoAndStop(2);
-		stage.addChild(icon1);
+		stage.addChild(icon1); // 在stage左边位置1画第2个icon出来
 
 		// we'll clone icon1 to save a little work:
 		var icon2 = icon1.clone();
 		icon2.x += 150;
 		icon2.gotoAndStop(5);
-		stage.addChild(icon2);
+		stage.addChild(icon2); // 在stage左边位置2画第5个icon出来
 
-		/*** Next: the more robust approach ***/
+		//*** Next: the more robust approach ***
 		// define sprite sheet data describing the available icons:
 		// we can use the form {frameName:frameNumber} in animations because each "sequence" is only a single frame:
 		var data = {
@@ -68,24 +68,24 @@
 
 		// we can reference frames by name now:
 		icon3.gotoAndStop("male");
-		stage.addChild(icon3);
-
+		stage.addChild(icon3); // 在stage左边位置3画第1(id为male)个icon出来
+	    
 		var icon4 = icon3.clone();
 		icon4.gotoAndStop("female");
 		icon4.x += 150;
-		stage.addChild(icon4);
-
+		stage.addChild(icon4); // 在stage左边位置4画第4(id为female)个icon出来
+	    
 		var icon5 = icon4.clone();
 		icon5.gotoAndStop("trash");
 		icon5.x += 150;
-		stage.addChild(icon5);
-
+		stage.addChild(icon5); // 在stage左边位置5画第0(id为trash)个icon出来
+	    
 		// finally, we'll add one that just plays through:
 		var icon6 = icon1.clone();
 		icon6.x = icon5.x + 150;
 		icon6.gotoAndPlay(0);
-		stage.addChild(icon6);
-
+		stage.addChild(icon6); // 在stage左边位置6循环播放由0开始的精灵集
+	    /**/
 		createjs.Ticker.framerate = 3; // slow, so we can see the icons
 		createjs.Ticker.addEventListener("tick", stage);
 	}
@@ -101,9 +101,9 @@
 <body onload="init();">
 
 <header class="EaselJS">
-	<h1>Spritesheet Icons</h1>
-
-	<p>Shows two approaches to use <code>Sprite</code> to display individual
+	<h1>Spritesheet Icons | Icons 精灵集</h1>
+    <p style="line-height:1.8;">要理解何时使用<code>gotoAndStop</code>和<code>gotoAndPlay</code><br />
+	Shows two approaches to use <code>Sprite</code> to display individual
 		frames from a <code>SpriteSheet</code>.</p>
 </header>
 
