@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -30,8 +30,8 @@
 
 		// attach mouse handlers directly to the source canvas.
 		// better than calling from canvas tag for cross browser compatibility:
-		stage.addEventListener("stagemousemove", moveCanvas);
-		stage.addEventListener("stagemousedown", clickCanvas);
+		stage.addEventListener("stagemousemove", moveCanvas); // 绑定鼠标移动事件　
+		stage.addEventListener("stagemousedown", clickCanvas); // 绑定鼠标点击事件　
 
 		// define simple sprite sheet data specifying the image(s) to use, the size of the frames,
 		// and the registration point of the frame
@@ -46,15 +46,17 @@
 			}
 		};
 
-		// set up an animation instance, which we will clone
+	    // set up an animation instance, which we will clone // 用SpriteSheet创建动画实例
 		sprite = new createjs.Sprite(new createjs.SpriteSheet(data));
 
-		// setup slow fadeout
+	    // setup slow fadeout // 尾巴特效处理。每tick都从cache里面画调出这块半透明背景，来使得之前画的星星可见，产生尾巴效果
 		fader = new createjs.Shape();
 		stage.addChild(fader);
 		var gfx = fader.graphics;
-		gfx.beginFill("rgba(0,0,0, 0.3)").drawRect(0,0, 1024, 704).endFill();
-		fader.cache(0,0, 1024,1024, 1/32); // Power of two textures smooth better, but we don't need full resolution either
+		gfx.beginFill("rgba(0,0,0, 0.2)").drawRect(0,0, 1024, 704).endFill();
+		fader.cache(0, 0, 1024, 1024, 1 / 32); // Power of two textures smooth better, but we don't need full resolution either　( x  y  width  height  [scale=1]  [options=undefined] )
+	    // Draws the display object into a new element, which is then used for subsequent draws. Intended for complex content that does not change frequently (ex. a Container with many children that do not move, or a complex vector Shape), this can provide for much faster rendering because the content does not need to be re-rendered each tick. 
+	    // cache的作用是每次tick都会从缓存调出自动画，不用重新渲染(re-render)
 
 		spkls = new createjs.Container();
 		stage.addChild(spkls);
@@ -66,42 +68,42 @@
 		fpsLabel.y = 20;
 
 		// start the tick and point it at the window so we can do some work before updating the stage:
-		createjs.Ticker.timingMode = createjs.Ticker.RAF;
+		createjs.Ticker.timingMode = createjs.Ticker.RAF; // 使用requestAnimationFrame方式
 		createjs.Ticker.addEventListener("tick", tick);
 	}
 
 	function tick(event) {
 		// loop through all of the active sparkles on stage:
-		var l = spkls.numChildren;
-		var m = event.delta / 16;
+		var l = spkls.numChildren; // 历遍所有的活动星星
+		var m = event.delta / 16; // event.delta是相对于上一次事件的时间间隔，如果用RAF的话一般是16，即间隔16ms每次，不同浏览器可能有轻微差异
 		for (var i = 0; i < l; i++) {
 			var sparkle = spkls.getChildAt(i);
 
 			if(--sparkle.life <= 0) {
-				spkls.removeChild(sparkle);
+				spkls.removeChild(sparkle); // 如果死掉的就移除，循环继续
 				i--; l--;
 				continue;
 			}
 
-			// apply gravity and friction
-			sparkle.vY += 0.1 * m;
+		    // apply gravity and friction　应用重力及摩擦阻力
+			sparkle.vY += 0.1 * m; // 竖直速度增加
 
 			// update position, scale, and alpha:
-			sparkle.x += sparkle.vX * m;
-			sparkle.y += sparkle.vY * m;
+			sparkle.x += sparkle.vX * m; // 水平方向匀速
+			sparkle.y += sparkle.vY * m; // 竖直方向有重力加速度
 
-			sparkle.alpha = sparkle.alphaStart * (sparkle.life / sparkle.lifeMax);
+			sparkle.alpha = sparkle.alphaStart * (sparkle.life / sparkle.lifeMax); // 设置透明度减小
 
 			// remove sparkles that are off screen or not invisible
 			if (sparkle.y > canvas.height) {
-				sparkle.vY *= -(Math.random() * 0.1 + 0.8);
-				sparkle.vX += Math.cos( Math.random() * Math.PI * 2) * 3;
+				sparkle.vY *= -(Math.random() * 0.1 + 0.8); // 到底反弹并衰减
+				sparkle.vX += Math.cos( Math.random() * Math.PI * 2) * 3; // 左右随机选择
 			} else if (sparkle.y < 0) {
-				sparkle.vY *= 0.9;
+				sparkle.vY *= 0.9; // 到顶减速
 			}
 
 			if (sparkle.x > canvas.width || sparkle.x < 0) {
-				sparkle.vX *= -1;
+			    sparkle.vX *= -1; // 水平方向到两边反弹
 			}
 		}
 
@@ -113,15 +115,15 @@
 
 	// sparkle explosion
 	function clickCanvas(evt) {
-		addSparkles(Math.random() * 200 + 100 | 0, stage.mouseX, stage.mouseY, 1);
+		addSparkles(Math.random() * 200 + 100 | 0, stage.mouseX, stage.mouseY, 1); // 点击生成快速星星
 	}
 
 	// sparkle trail
 	function moveCanvas(evt) {
-		addSparkles((Math.random() * 4 + 2) | 0, stage.mouseX, stage.mouseY, 0.1);
+	    addSparkles((Math.random() * 4 + 2) | 0, stage.mouseX, stage.mouseY, 0.1); // 移动生成慢速星星
 	}
 
-	function addSparkles(count, x, y, speed) {
+	function addSparkles(count, x, y, speed) { // 添加星星
 		// create the specified number of sparkles
 		for (var i = 0; i < count; i++) {
 			// clone the original sparkle, so we don't need to set shared properties:
@@ -143,7 +145,7 @@
 			sparkle.vY = Math.sin(a) * v;
 
 			// start the animation on a random frame:
-			sparkle.gotoAndPlay(Math.random() * sparkle.spriteSheet.getNumFrames() | 0);
+			sparkle.gotoAndPlay(Math.random() * sparkle.spriteSheet.getNumFrames() | 0); // 星星由随机帧数开始播放
 
 			// add to the display list:
 			spkls.addChild(sparkle);

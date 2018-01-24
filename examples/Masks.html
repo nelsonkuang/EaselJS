@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -41,14 +41,16 @@
 		star.x = img.width / 2;
 		star.y = img.height / 2;
 		// only the drawPolyStar call is needed for the mask to work:
-		star.graphics.beginStroke("#FF0").setStrokeStyle(5).drawPolyStar(0, 0, img.height / 2 - 15, 5, 0.6).closePath();
+		star.graphics.beginStroke("#FF0").setStrokeStyle(2).drawPolyStar(0, 0, img.height / 2 - 15, 5, 0.6).closePath(); // 画星星
 
+        /******************画背景*******************/
 		var bg = new createjs.Bitmap(img);
 		// blur and desaturate the background image:
 		bg.filters = [new createjs.BlurFilter(2, 2, 2), new createjs.ColorMatrixFilter(new createjs.ColorMatrix(0, 0, -100, 0))];
 		bg.cache(0, 0, img.width, img.height);
 		stage.addChild(bg);
 
+	    /******************画加了蒙板的前景图片*******************/
 		var bmp = new createjs.Bitmap(img);
 		stage.addChild(bmp);
 		bmp.mask = star;
@@ -61,8 +63,8 @@
 	}
 
 	function tick(event) {
-		star.rotation += 5;
-		star.scale = 1.5 + Math.sin(angle) * 3;
+		star.rotation += 3; // 旋转蒙板星星
+		star.scale = 1 + Math.sin(angle) * 1.2; // 缩放蒙板星星
 		stage.update(event);
 		angle += 0.025;
 	}
@@ -71,7 +73,7 @@
 
 <body onload="init();">
 <header class="EaselJS">
-	<h1>Masks</h1>
+	<h1>Masks蒙板功能</h1>
 
 	<p>Demonstrates using <code>DisplayObject.mask</code>. Note that the
 		vector <code>Shape</code> that defines the mask can also be placed on

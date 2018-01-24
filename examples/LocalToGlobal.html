@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -75,21 +75,22 @@
 		stage.addChild(arm1);
 
 		// start the tick and point it at the window so we can do some work before updating the stage:
-		createjs.Ticker.interval = 20;		// in ms, so 50 fps
+		createjs.Ticker.interval = 20;		// in ms, so 50 fps 每20毫秒tick一次 类似setInterval(fn, 20);
 		createjs.Ticker.addEventListener("tick", tick);
 	}
 
 	function tick(event) {
 		// update rotation for all arms:
-		arm1.rotation += 1.9;
-		arm2.rotation += -2.7;
-		bar3.rotation += 4.4;
+		arm1.rotation += 0.2;
+		arm2.rotation += -0.5;
+		bar3.rotation += 0.4;
 
 		// calculate the global (stage) position of the end of the red bar,
 		// and move the HTML "whee" button to that position:
-		var pt = bar3.localToGlobal(0, 130);
+		var pt = bar3.localToGlobal(0, 130); // 获取末端位置信息
 		whee.style.left = Math.round(pt.x + canvas.offsetLeft - 10) + "px";
 		whee.style.top = Math.round(pt.y + canvas.offsetTop - 10) + "px";
+		whee.value = 'L: ' + whee.style.left + " T: " + whee.style.top;
 
 		stage.update(event);
 	}
@@ -99,7 +100,7 @@
 <body onload="init();">
 
 <header class="EaselJS">
-	<h1>Local To Global</h1>
+	<h1>Local To Global获取本地到全局信息</h1>
 
 	<p>Using <code>DisplayObject.localToGlobal()</code> to position an HTML
 		element relative to a <code>DisplayObject</code> nested in the display
