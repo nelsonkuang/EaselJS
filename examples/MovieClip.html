@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -36,8 +36,8 @@
 		createjs.Ticker.timingMode = createjs.Ticker.RAF;
 
 		// Create the MovieClip
-		var mc = new createjs.MovieClip({loop:-1, labels: {start: 0, middle: 20}});
-		mc.framerate = 20;
+		var mc = new createjs.MovieClip({ loop: -1, labels: { start: 0, middle: 30 } }); // mode startPosition frameBounds. This object will also be passed into the Timeline instance associated with this MovieClip. See the documentation for Timeline for a list of supported props (ex. paused, labels, loop, reversed, etc.)
+		mc.framerate = 60;
 		stage.addChild(mc);
 
 		// Create the States. Each state is just a circle shape.
@@ -52,15 +52,15 @@
 		// Create a tween for each shape, animating from one side to the other.
 		mc.timeline.addTween(
 				createjs.Tween.get(greyCircle, {paused:true})
-						.to({x: 0}).to({x: 760}, 40).to({x: 0}, 40));
+						.to({ x: 0 }).to({ x: 760 }, 100).to({ x: 0 }, 100)); // Indicates the number of times to loop. If set to -1, the tween will loop continuously. 100是duration，loop: -1是new MovieClip时传下来的
 		mc.timeline.addTween(
 				createjs.Tween.get(blueCircle, {paused:true})
-						.to({x: 760}).to({x: 0}, 40).to({x: 760}, 40));
+						.to({ x: 760 }).to({ x: 0 }, 100).to({ x: 760 }, 100));
 		
 		//mc.stop();
 
 		// Play the animation starting when the circles are in the middle. See the MovieClip constructor above where the labels are specified.
-		mc.gotoAndPlay("middle");
+		mc.gotoAndPlay("middle"); // 在labels: { start: 0, middle: 20 }这里定义了middle
 	}
 </script>
 

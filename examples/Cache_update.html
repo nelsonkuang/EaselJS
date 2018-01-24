@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -16,6 +16,7 @@
 	var starfield
 	var moon;
 	var sky;
+	var xSpeed = 0.5;
 
 	function init() {
 		// create a new stage and point it at our canvas:
@@ -33,12 +34,12 @@
 		stage.addChild(starfield);
 
 		// set up the cache for the star field shape, and make it the same size as the canvas:
-		starfield.cache(0, 0, canvas.width, canvas.height);
+		starfield.cache(0, 0, canvas.width, canvas.height); // 缓存星星，尺寸与canvas一样大
 
-		// draw the moon in a separate shape, so it isn't part of the generative caching:
+		// draw the moon in a separate shape, so it isn't part of the generative caching 画月亮:
 		moon = new createjs.Shape();
-		moon.graphics.beginFill("#CCF").drawCircle(0, 0, 60);
-		moon.graphics.beginFill("#000").drawEllipse(-35, -57, 96, 114);
+		moon.graphics.beginFill("#CCF").drawCircle(0, 0, 60);// 画月亮背景黑圆
+		moon.graphics.beginFill("#000").drawEllipse(-35, -57, 96, 114); // 画月亮
 		moon.rotation = -30;
 		stage.addChild(moon);
 
@@ -56,22 +57,22 @@
 		starfield.graphics.beginFill(createjs.Graphics.getRGB(0xFFFFFF, Math.random())).drawPolyStar(Math.random() * canvas.width, Math.random() * canvas.height, Math.random() * 4 + 1, 5, 0.93, Math.random() * 360);
 
 		// draw the new vector onto the existing cache, compositing it with the "source-overlay" composite operation:
-		starfield.updateCache("source-overlay");
+		starfield.updateCache("source-overlay");　// 使用缓存updateCache来创建无限的星
 
 		// if you omit the compositeOperation param in updateCache, it will clear the existing cache, and draw into it:
 		// in this demo, that has the effect of showing just the star that was drawn each tick.
 		// shape.updateCache();
 
 		// because the vector star has already been drawn to the cache, we can clear it right away:
-		starfield.graphics.clear();
+		starfield.graphics.clear(); // 清除图形库设置，用于上面重新画
 
 		// darken the sky:
-		sky.alpha -= 0.0005;
+		sky.alpha -= 0.0005; // 星空越来暗
 
 		// move the moon across the sky:
 		var w = canvas.width + 200;
-		moon.x = (moon.x + 100 + 1 + w) % w - 100;
-		moon.y = 250 - Math.sin(moon.x / w * Math.PI) * 150;
+		moon.x = (moon.x + 100 + xSpeed + w) % w - 100; // 水平方向匀速
+		moon.y = 250 - Math.sin(moon.x / w * Math.PI) * 150; // 竖直正弦运动
 
 		// draw the updates to stage:
 		stage.update(event);

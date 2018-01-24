@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -31,9 +31,9 @@
 	function handleImageLoad() {
 		var canvas = document.getElementById("testCanvas");
 		stage = new createjs.Stage(canvas);
-		stage.autoClear = true;
+		stage.autoClear = true; // 自动清空内容
 		bmp = new createjs.Bitmap(img);
-		bmp.regX = img.width >> 1;
+		bmp.regX = img.width >> 1;　// 除2取整(floor方式)
 		bmp.regY = img.height >> 1;
 		bmp.x = canvas.width >> 1;
 		bmp.y = canvas.height >> 1;
@@ -47,10 +47,10 @@
 
 	function tick(event) {
 		angle += 0.01;
-		var value = Math.sin(angle) * 360;
+		var value = Math.sin(angle) * 360; // 0 ~ 360
 
-		bmp.rotation = value;
-		bmp.scale = value / 360;
+		bmp.rotation = value; // 0 ~ 360度
+		bmp.scale = value / 360; // 0 ~ 1
 		stage.update(event);
 	}
 
@@ -60,7 +60,7 @@
 <body onload="init()">
 
 <header class="EaselJS">
-	<h1>Simple Transform Example</h1>
+	<h1>简单 Transform 范例</h1>
 
 	<p>A simple example of EaselJS transformations, such as
 		<code>rotation</code>, <code>scaleX</code>, and <code>scaleY</code>.</p>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -13,13 +13,15 @@
 	  http://code.createjs.com -->
 
 <script id="editable">
-	var stage;
+    var stage;
+    var grant;
 	function init() {
 
 		// create a new stage and point it at our canvas:
 		stage = new createjs.Stage(document.getElementById("testCanvas"));
 
-		// Define a spritesheet. Note that this data was exported by Zoë.
+	    // Define a spritesheet. Note that this data was exported by Zoë.
+
 		var spriteSheet = new createjs.SpriteSheet({
 				framerate: 30,
 				"images": ["../_assets/art/spritesheet_grant.png"],
@@ -39,16 +41,21 @@
 			console.log("Error", event);
 		});
 
-		var grant = new createjs.Sprite(spriteSheet, "run");
+		grant = new createjs.Sprite(spriteSheet, "run");
 		grant.x = stage.canvas.width / 2;
 		grant.y = 22;
 
 		// Add Grant to the stage, and add it as a listener to Ticker to get updates each frame.
 		stage.addChild(grant);
-		createjs.Ticker.timingMode = createjs.Ticker.RAF;
-		createjs.Ticker.addEventListener("tick", stage);
-	}
 
+		grant.on('click', handleJumpStart); // 点击跳动
+
+		createjs.Ticker.timingMode = createjs.Ticker.RAF; // 设置循环方法，可以是requestAnimationFrame或者是setTimeout
+		createjs.Ticker.addEventListener("tick", stage); // 开始监听每一帧所有的事件
+	}
+	function handleJumpStart() {
+	    grant.gotoAndPlay("jump");
+	}
 </script>
 </head>
 

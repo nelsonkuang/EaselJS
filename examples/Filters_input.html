@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -6,8 +6,8 @@
 
 	<link href="../_assets/css/shared.css" rel="stylesheet" type="text/css"/>
 	<link href="../_assets/css/examples.css" rel="stylesheet" type="text/css"/>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jqueryui/1.12.1/jquery-ui.min.js"></script>
 	<script src="../_assets/js/examples.js"></script>
 
 	<script src="../lib/easeljs-NEXT.js"></script>
@@ -48,23 +48,23 @@
 
 		var panel = new createjs.Shape().set({alpha: 0.7});
 		panel.graphics.beginFill("#111").drawRect(0, canvas.height - 125, canvas.width, 125);
-		stage.addChild(panel);
+		stage.addChild(panel); // 控制面板
 
 		var sliderNames = ["brightness", "contrast", "hue", "saturation", "blurX", "blurY"];
 		for (var i = 0; i < sliderNames.length; i++) {
 			var name = sliderNames[i];
-			var x = (i / 2 | 0) * 300;
-			var y = i % 2 * 50 + 305;
+			var x = (i / 2 | 0) * 300; // x间隔300放一个
+			var y = i % 2 * 50 + 305; // y第4个开始放下一行
 
 			var label = new createjs.Text(name, "18px Arial", "white");
 			label.set({textAlign: "right", x: x + 150, y: y});
 
-			var slider = new Slider(0, 1, 150).set({x: x + 160, y: y});
+			var slider = new Slider(0, 1, 150).set({x: x + 160, y: y}); // 设置每个slider的位置
 			sliders[name] = slider;
 			if (i < 4) {
 				slider.value = 0.5;
 			}
-			slider.on("change", handleSliderChange, this);
+			slider.on("change", handleSliderChange, this); // 绑定slider事件
 
 			stage.addChild(label, slider);
 		}
@@ -78,7 +78,7 @@
 		stage.update();
 	}
 
-	function handleSliderChange(evt) {
+	function handleSliderChange(evt) { // 全部一起调整
 		blurFilter.blurX = sliders.blurX.value * 32;
 		blurFilter.blurY = sliders.blurY.value * 32;
 
@@ -97,7 +97,7 @@
 
 <body onload="init()">
 <header class="EaselJS">
-	<h1>Filters</h1>
+	<h1>Filters 滤镜</h1>
 
 	<p>Demonstrates using <code>ColorMatrixFilter</code> and
 		<code>BlurFilter</code>. Adjust sliders to view results.</p>

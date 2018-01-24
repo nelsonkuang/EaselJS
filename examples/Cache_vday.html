@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -18,6 +18,8 @@
 	var container;
 	var captureContainers;
 	var captureIndex;
+	var heartCount = 50; // 
+	var cacheCount = 100;
 
 	function init() {
 		// create a new stage and point it at our canvas:
@@ -34,11 +36,11 @@
 		captureIndex = 0;
 
 		// create a large number of slightly complex vector shapes, and give them random positions and velocities:
-		for (var i = 0; i < 100; i++) {
+		for (var i = 0; i < heartCount; i++) { // 100个心
 			var heart = new createjs.Shape();
-			heart.graphics.beginFill(createjs.Graphics.getHSL(Math.random() * 30 - 45, 100, 50 + Math.random() * 30));
-			heart.graphics.moveTo(0, -12).curveTo(1, -20, 8, -20).curveTo(16, -20, 16, -10).curveTo(16, 0, 0, 12);
-			heart.graphics.curveTo(-16, 0, -16, -10).curveTo(-16, -20, -8, -20).curveTo(-1, -20, 0, -12);
+			heart.graphics.beginFill(createjs.Graphics.getHSL(Math.random() * 30 - 45, 100, 50 + Math.random() * 30));　// red
+			heart.graphics.moveTo(0, -12).curveTo(1, -20, 8, -20).curveTo(16, -20, 16, -10).curveTo(16, 0, 0, 12); // heart
+			heart.graphics.curveTo(-16, 0, -16, -10).curveTo(-16, -20, -8, -20).curveTo(-1, -20, 0, -12); // heart
 			heart.y = -100;
 
 			container.addChild(heart);
@@ -50,7 +52,7 @@
 		text.y = h / 2 - text.getMeasuredLineHeight();
 		stage.addChild(text);
 
-		for (i = 0; i < 100; i++) {
+		for (i = 0; i < cacheCount; i++) { // 初始化缓存数组 100个用于缓存100帧动画
 			var captureContainer = new createjs.Container();
 			captureContainer.cache(0, 0, w, h);
 			captureContainers.push(captureContainer);
@@ -70,7 +72,7 @@
 		stage.removeChildAt(0);
 		var captureContainer = captureContainers[captureIndex];
 		stage.addChildAt(captureContainer, 0);
-		captureContainer.addChild(container);
+		captureContainer.addChild(container); // 1个container有100个心
 
 		// iterate through all the children and move them according to their velocity:
 		for (var i = 0; i < l; i++) {
@@ -88,15 +90,15 @@
 				heart.compositeOperation = Math.random() < 0.33 ? "lighter" : "source-over";
 			}
 			var int = (heart.offX + heart.y) / heart.perX * Math.PI * 2;
-			heart.y += heart.velY * heart.scaleX / 2;
-			heart.x = heart._x + Math.cos(int) * heart.ampX;
-			heart.rotation = heart._rotation + Math.sin(int) * 30;
+			heart.y += heart.velY * heart.scaleX / 2; // y 向上匀速
+			heart.x = heart._x + Math.cos(int) * heart.ampX; // x 正弦左右摇摆
+			heart.rotation = heart._rotation + Math.sin(int) * 30; // 正弦旋转
 		}
 
-		captureContainer.updateCache("source-over");
+		captureContainer.updateCache("source-over"); 　// 使用多缓存updateCache来创建无限的心，每次创建100个心
 
 		// draw the updates to stage:
-		stage.update(event);
+		stage.update(event); // 把更新应用到stage
 	}
 
 </script>

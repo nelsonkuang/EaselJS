@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -23,7 +23,7 @@
 
 	function init() {
 		angle = 0;
-		range = 30;
+		range = 30; // 左右模糊30
 		speed = 0.02;
 		img = new Image();
 		img.onload = handleImageLoad;
@@ -34,7 +34,7 @@
 		canvas = document.getElementById("testCanvas");
 		stage = new createjs.Stage(canvas);
 
-		bmp = new createjs.Bitmap(img).set({y: (canvas.height - img.height) / 2});
+		bmp = new createjs.Bitmap(img).set({y: (canvas.height - img.height) / 2}); // 让图片上下绝对居中画出来
 		bmp.cache(0, 0, img.width, img.height);
 
 		stage.addChild(bmp);
@@ -46,8 +46,8 @@
 		angle += speed;
 
 		var value = (Math.sin(angle) + 1) / 2 * range;
-		bmp.updateCache();
-		bmp.filters = [new createjs.BlurFilter(value, value, 2)];
+		bmp.updateCache(); // 改变一次就更新缓存
+		bmp.filters = [new createjs.BlurFilter(value, value, 2)]; // 用sin函数循环应用模糊滤镜
 
 		stage.update(event);
 	}
@@ -57,7 +57,7 @@
 <body onload="init()">
 
 <header class="EaselJS">
-	<h1>BlurFilter</h1>
+	<h1>BlurFilter 模糊滤镜</h1>
 
 	<p>This sample loads an image, and applies a <code>BlurFilter</code> each
 		tick with a varying value.</p>

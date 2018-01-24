@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -31,7 +31,7 @@
 		var bmp = new createjs.Bitmap(evt.target).set({x:50, y:30});
 		bmp.sourceRect = new createjs.Rectangle(0, 0, 165, 292);
 		
-		// red monochrome tint effect:
+	    // red monochrome tint effect 调色调效果: 
 		var filters = [new createjs.ColorMatrixFilter([
 				0.3, 0.3, 0.3, 0, 25, // red
 				0, 0, 0, 0, 0, // green
@@ -39,41 +39,41 @@
 				0, 0, 0, 1, 0])]; // alpha
 		var fx = getFXBitmap(bmp, filters, 0, 0, 165, 292);
 		createjs.Tween.get(fx, {loop:true}).to({alpha:1}, 1000).to({alpha:0}, 1000);
-		stage.addChild(bmp, fx);
+		stage.addChild(bmp, fx); // 原图放底 滤镜图放上面
 		
 		
-		// glow (blur + tint):
-		bmp = bmp.clone();
+	    // glow (blur + tint) 描边效果:
+		bmp = bmp.clone(); // 直接复制一个图
 		bmp.x += 230;
 		filters = [new createjs.BlurFilter(16,16,1), new createjs.ColorFilter(0,0,0,1.5,0,150,255)];
 		fx = getFXBitmap(bmp, filters, 0, 0, 165, 292);
 		createjs.Tween.get(fx, {loop:true}).to({alpha:1}, 5000).to({alpha:0}, 1000);
-		stage.addChild(fx, bmp);
+		stage.addChild(fx, bmp);// 原图放上面 滤镜图放底
 		
 		
-		// shadow (tint + blur + offset):
-		bmp = bmp.clone();
+	    // shadow (tint + blur + offset) 阴影效果:
+		bmp = bmp.clone(); // 直接复制一个图
 		bmp.x += 230;
 		filters = [new createjs.ColorFilter(0,0,0,0.6), new createjs.BlurFilter(8,8,1)];
 		fx = getFXBitmap(bmp, filters, 0, 0, 165, 292);
 		createjs.Tween.get(fx, {loop:true}).to({alpha:1, x:fx.x+12, y:fx.y+12}, 4000).to({alpha:0, x:fx.x, y:fx.y}, 2000);
-		stage.addChild(fx, bmp);
+		stage.addChild(fx, bmp); // 原图放上面 滤镜图放底
 		
 		
-		// blur:
-		bmp = bmp.clone();
+		// blur 模糊效果:
+		bmp = bmp.clone(); // 直接复制一个图
 		bmp.x += 230;
 		filters = [new createjs.BlurFilter(16,16,2)];
 		fx = getFXBitmap(bmp, filters, 0, 0, 165, 292);
 		var tween = createjs.Tween.get(fx, {loop:true}).to({alpha:1}, 2500).wait(1000).to({alpha:0}, 2500);
 		// we also need to counter fade the original bitmap:
 		tween.on("change", function() { bmp.alpha = 1-Math.pow(fx.alpha,3); });
-		stage.addChild(bmp, fx);
+		stage.addChild(bmp, fx); // 原图放底 滤镜图放上面
 		
 		createjs.Ticker.on("tick", stage);
 	}
 	
-	function getFXBitmap(source, filters, x, y, w, h) {
+	function getFXBitmap(source, filters, x, y, w, h) { // 生成滤镜效果的Bitmap
 		// cache the source, so we can grab a rasterized image of it:
 		source.cache(x, y, w, h);
 		
@@ -102,7 +102,7 @@
 
 <body onload="init();">
 <header class="EaselJS">
-	<h1>Animating Filters</h1>
+	<h1>Animating Filters 滤镜动画</h1>
 
 	<p>Demonstrates a high performance approach to animating filter effects. Filters are applied once to a visual copy
 	of the target object, then faded in to create the effect. This is MUCH more efficient than updating

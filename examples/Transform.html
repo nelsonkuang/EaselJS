@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -37,11 +37,11 @@
 		sliceContainer = new createjs.Container();
 		sliceContainer.x = stage.canvas.width / 2;
 
-		for (var i = 0; i < sliceCount; i++) {
+		for (var i = 0; i < sliceCount; i++) { // 把图片裁成6小份
 			var slice = new createjs.Bitmap(img);
-			slice.sourceRect = new createjs.Rectangle(sliceWidth * i, 0, sliceWidth, imgHeight);
-			slice.cache(0, 0, sliceWidth, imgHeight);
-			slice.filters = [new createjs.ColorMatrixFilter(new createjs.ColorMatrix())];
+			slice.sourceRect = new createjs.Rectangle(sliceWidth * i, 0, sliceWidth, imgHeight); // 指定要用图片的哪部分来画( [x=0]  [y=0]  [width=0]  [height=0] ) Specifies an area of the source image to draw. If omitted, the whole image will be drawn. 
+			slice.cache(0, 0, sliceWidth, imgHeight);// 缓存1/6大小的图片 If you want to use a filter on a Bitmap, you MUST cache it, or it will not work. 
+			slice.filters = [new createjs.ColorMatrixFilter(new createjs.ColorMatrix())]; // 用新的滤镜 An array of Filter objects to apply to this display object. Filters are only applied / updated when Cache or UpdateCache is called on the display object, and only apply to the area that is cached.
 			sliceContainer.addChild(slice);
 		}
 
