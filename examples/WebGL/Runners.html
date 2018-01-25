@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -22,23 +22,23 @@
 		var maxSparkles = 800;
 
 		function init() {
-			if (location.search.match(/c2d/i)) {
+		    if (location.search.match(/c2d/i)) { // 如果不支持GL强制使用context 2D
 				// force it to use Context2D if c2d appears in the query string: ex. Runners.html?c2d
 				stage = new createjs.Stage("testCanvas");
 			} else {
-				stage = new createjs.StageGL("testCanvas");
+		        stage = new createjs.StageGL("testCanvas"); // 不然使用GL
 				stage.setClearColor("#66AA99");
 				//stage.updateSimultaneousTextureCount(1);
 			}
 
 			// reduce visual complexity if WebGL is not supported:
-			if (!stage.isWebGL) {
+			if (!stage.isWebGL) { // 如果不支持GL减小人跟星星的数量
 				maxRunners = maxRunners / 5 | 0;
 				maxSparkles = maxSparkles / 5 | 0;
 			}
-			sparklePool = []; // simple object pool
+			sparklePool = []; // simple object pool 星星池
 
-			var queue = new createjs.LoadQueue();
+			var queue = new createjs.LoadQueue(); // 创建资源加载队列
 			queue.on("complete", handleLoad, this);
 			queue.loadManifest([
 				{id: "runner",	src: "../../_assets/art/spritesheet_grant.png"},
@@ -48,40 +48,41 @@
 			], true);
 		}
 
-		function handleLoad(evt) {
-			setupSpriteSheets(evt.target);
-			setupUI(evt.target);
-			createjs.Ticker.timingMode = createjs.Ticker.RAF;
-			createjs.Ticker.on("tick", tick, this);
+		function handleLoad(evt) { // 加载完成执行
+			setupSpriteSheets(evt.target); // 初始化精灵
+			setupUI(evt.target); // 设置初始UI界面
+			createjs.Ticker.timingMode = createjs.Ticker.RAF; // 用requestAnimationFrame方式
+			createjs.Ticker.on("tick", tick, this); // 每帧动画回调
 		}
 
 		function tick(evt) {
+            /******************增加人*******************/
 			// runners:
 			var i;
 			var l = runnerContainer.numChildren;
 			if (l < maxRunners && Math.random() < 0.3) {
-				addRunner();
+				addRunner(); // 增加一个人
 				l++;
 			}
 
 			for (i=0; i<l; i++) {
 				var runner = runnerContainer.getChildAt(i);
-				runner.x += runner.velX;
-				if (runner.x > 1000) {
+				runner.x += runner.velX; // 水平移动
+				if (runner.x > 1000) {　// 出界则重设位置
 					resetRunner(runner);
 				}
 			}
-
+		    /******************增加星星*******************/
 			l = sparkleContainer.numChildren;
 			for (i=0; i<l; i++) {
 				var sparkle = sparkleContainer.getChildAt(i);
-				sparkle.x += sparkle.velX;
-				sparkle.y += sparkle.velY;
-				sparkle.velX *= 0.99;
-				sparkle.velY = (sparkle.velY + 0.5) * 0.99;
-				if (sparkle.y > 400 || sparkle.x < 0 || sparkle.x > 960) {
+				sparkle.x += sparkle.velX; // x增加
+				sparkle.y += sparkle.velY; // y增加
+				sparkle.velX *= 0.99; // x速度减小
+				sparkle.velY = (sparkle.velY + 0.5) * 0.99; // y速度增加
+				if (sparkle.y > 400 || sparkle.x < 0 || sparkle.x > 960) { // 如果出界则删除，然后重新入栈
 					sparkleContainer.removeChildAt(i);
-					sparklePool.push(sparkle);
+					sparklePool.push(sparkle); 
 					i--;
 					l--;
 				}
@@ -92,14 +93,14 @@
 
 		function addRunner() {
 			var runner = new createjs.Sprite(runnerSS, "run");
-			runner.on("mousedown", explodeRunner, this);
+			runner.on("mousedown", explodeRunner, this); // 绑定每个人的点击事件
 			resetRunner(runner);
 		}
 
-		function explodeRunner(evt) {
+		function explodeRunner(evt) { // 爆星
 			var runner = evt.target;
-			addSparkles(runner.x, runner.y - 140 * runner.scaleY, runner.velX, -8);
-			resetRunner(runner);
+			addSparkles(runner.x, runner.y - 140 * runner.scaleY, runner.velX, -8);　// 爆一次星
+			resetRunner(runner); // 重设runner
 		}
 
 		function resetRunner(runner) {
@@ -110,42 +111,42 @@
 			var l = runnerContainer.numChildren;
 
 			// very simple depth sorting. Not exact, but good enough for this example.
-			for (var i = 0; i < l; i++) {
-				if (runner.y <= runnerContainer.getChildAt(i).y) {
+			for (var i = 0; i < l; i++) { // 重新放好人在原位，算法可以优化
+			    if (runner.y <= runnerContainer.getChildAt(i).y) { // runnerContainer的runner队列是以y大小升序排列的，如果这个runner比当前的小，则插到本位置
 					runnerContainer.addChildAt(runner, i);
 					break;
 				}
 			}
-			if (i == l) {
+			if (i == l) { // 如果比所有的都大，则直接add进去
 				runnerContainer.addChild(runner);
 			}
 
 			var size = Math.random() * Math.random() * Math.random();
-			runner.velX = 6 - size * 4;
-			runner.framerate = runner.velX * 8;
-			runner.scale = size + 0.45;
+			runner.velX = 6 - size * 4; // 重设runner速度随机
+			runner.framerate = runner.velX * 8; // 重设runner帧频随机
+			runner.scale = size + 0.45; // 重设runner比例大小
 		}
 
 		function addSparkles(x, y, velX, velY) {
 			for (var i = 0; i < maxSparkles; i++) {
-				var sparkle = sparklePool.length ? sparklePool.pop() : new createjs.Sprite(sparkleSS);
-				sparkle.gotoAndPlay(Math.random() * sparkleSS.getNumFrames());
+				var sparkle = sparklePool.length ? sparklePool.pop() : new createjs.Sprite(sparkleSS); // 如果星星池有则全部拿出来，不然就重新创建
+				sparkle.gotoAndPlay(Math.random() * sparkleSS.getNumFrames()); // 星星随机帧数开始播放
 				var sc = Math.random() + 1;
-				sparkle.setTransform(x, y, sc, sc, Math.random() * 360);
-				var r = Math.random() * Math.PI * 2;
+				sparkle.setTransform(x, y, sc, sc, Math.random() * 360); // 设置星星的位置、缩放大小、旋转
+				var r = Math.random() * Math.PI * 2; // 定一个随机数
 				var v = Math.random() * 14.5 + 0.5; // if this was 0 there was a bit of a central clump, too high leaves a dead spot
-				sparkle.velX = velX + Math.cos(r) * v;
-				sparkle.velY = velY + Math.sin(r) * v;
-				sparkleContainer.addChild(sparkle);
+				sparkle.velX = velX + Math.cos(r) * v; // 设置x速度
+				sparkle.velY = velY + Math.sin(r) * v;　// 设置y速度
+				sparkleContainer.addChild(sparkle); // 添加到stage
 			}
 		}
 
 		function setupUI(queue) {
 			// background hill - just to demonstrate that bitmaps can be added to a StageGL:
-			var hill1 = new createjs.Bitmap(queue.getResult("hill"));
-			hill1.setTransform(345, 110, 3, 3);
-			var hill2 = hill1.clone();
-			hill2.x -= 600;
+		    var hill1 = new createjs.Bitmap(queue.getResult("hill")); // 创建山hill1
+			hill1.setTransform(345, 110, 3, 3); // 设置山的位置
+			var hill2 = hill1.clone(); // 复制一个山hill2
+			hill2.x -= 600; // 设置山的位置
 
 			// SpriteContainers for runners and sparkles.
 			// Each SpriteContainer specifies a SpriteSheet that all its descendants must share:
@@ -154,14 +155,14 @@
 
 			// Bitmap Text header.
 			// Again, the children must all share the SpriteSheet specified by the container.
-			var topText = new createjs.BitmapText("CLICK TO DETONATE!", textSS);
+			var topText = new createjs.BitmapText("CLICK TO DETONATE!", textSS); // 介绍玩法文字
 			topText.setTransform(10, 10);
 
-			stage.addChild(hill1, hill2, runnerContainer, topText, sparkleContainer);
+			stage.addChild(hill1, hill2, runnerContainer, topText, sparkleContainer); // 把上面全部东西输出到Stage
 		}
 
 		function setupSpriteSheets(queue) {
-			runnerSS = new createjs.SpriteSheet({
+		    runnerSS = new createjs.SpriteSheet({ // 创建人SpriteSheet
 				framerate: 30,
 				images: [queue.getResult("runner")],
 				frames: {
@@ -177,7 +178,7 @@
 				}
 			});
 
-			sparkleSS = new createjs.SpriteSheet({
+			sparkleSS = new createjs.SpriteSheet({ // 创建星星SpriteSheet
 				framerate: 60,
 				images: [queue.getResult("sparkle")],
 				frames: {
@@ -188,7 +189,7 @@
 				}
 			});
 
-			textSS = new createjs.SpriteSheet({
+			textSS = new createjs.SpriteSheet({ // 创建文字SpriteSheet
 				images: [queue.getResult("font")],
 				frames: [
 					[155, 2, 25, 41, 0, -10, -3],

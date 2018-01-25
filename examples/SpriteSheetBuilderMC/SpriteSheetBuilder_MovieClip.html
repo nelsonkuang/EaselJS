@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -28,7 +28,7 @@
 		mc = new lib.gunnertron();
 		w = mc.nominalBounds.width * scale;
 		mc.setTransform(100 + w / 2, 100, scale, scale);
-		stage.addChild(mc);
+		stage.addChild(mc); // 输出MovieClip到stage
 
 		var label1 = stage.addChild(new createjs.Text("MovieClip (vector)", "14px Arial", "#111"));
 		label1.textAlign = "center";
@@ -57,7 +57,7 @@
 		var spriteSheet = event.target.spriteSheet;
 		var sprite = new createjs.Sprite(spriteSheet);
 		sprite.setTransform(mc.x + w + 50 | 0, mc.y);
-		stage.addChild(sprite);
+		stage.addChild(sprite); // SpriteSheetBuilder 构建完SpriteSheet后输出sprite到stage
 
 		mc.gotoAndPlay(0);
 		sprite.gotoAndPlay(0);

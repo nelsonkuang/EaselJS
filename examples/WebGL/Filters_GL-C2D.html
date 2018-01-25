@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -27,7 +27,7 @@
 		var canvas = document.getElementById("testCanvas");
 
 		// create a new stage and point it at our canvas:
-		stage = new createjs.StageGL(canvas);
+		stage = new createjs.StageGL(canvas);  // 与普通的stage使用方式不一样
 		stage.updateViewport && stage.updateViewport(960, 400);
 
 		var bmp = new createjs.Bitmap(img).set({scaleX: 0.5, scaleY: 0.5});

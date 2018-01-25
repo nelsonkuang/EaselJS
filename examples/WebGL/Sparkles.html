@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -25,9 +25,9 @@
 	function init() {
 		// create a new stage and point it at our canvas:
 		canvas = document.getElementById("testCanvas");
-		stage = new createjs.StageGL(canvas, {preserveBuffer:true, antialias:true});
+		stage = new createjs.StageGL(canvas, {preserveBuffer:true, antialias:true}); // 与普通的stage不一样
 		stage.autoClear = false;
-		stage.setClearColor(0x000000);
+		stage.setClearColor(0x000000);　// 与普通的stage使用方式不一样
 
 		// attach mouse handlers directly to the source canvas.
 		// better than calling from canvas tag for cross browser compatibility:

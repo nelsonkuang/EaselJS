@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
@@ -27,8 +27,8 @@
 		var canvas = document.getElementById("testCanvas");
 
 		// create a new stage and point it at our canvas:
-		stage = new createjs.StageGL(canvas);
-		stage.updateViewport && stage.updateViewport(960, 400);
+		stage = new createjs.StageGL(canvas); // 与普通的stage使用方式不一样
+		stage.updateViewport && stage.updateViewport(960, 400); // 与普通的stage使用方式不一样
 
 		var bmp = new createjs.Bitmap(img).set({scaleX: 0.5, scaleY: 0.5});
 		stage.addChild(bmp);
@@ -44,7 +44,7 @@
 		bmp.filters = [blackAndWhiteFilter, removeFilter];
 		stage.addChild(bmp);
 
-		bmp.cache(0, 0, img.width, img.height, 1, {useGL: "stage"});
+		bmp.cache(0, 0, img.width, img.height, 1, { useGL: "stage" });  // 与普通的context 2D filters使用方式不一样
 		bmp.x = 480;
 
 		var fadeFilter = new createjs.ColorMatrixFilter(colorMatrix);
@@ -53,7 +53,7 @@
 		bmp.filters = [blurFilter,fadeFilter];
 		stage.addChild(bmp);
 
-		bmp.cache(0, 0, img.width, img.height, 1, {useGL: "stage"});
+		bmp.cache(0, 0, img.width, img.height, 1, { useGL: "stage" }); // 与普通的context 2D filters使用方式不一样
 		bmp.y = 200;
 
 		var removeRedFilter = new createjs.ColorFilter(0.25, 0.75, 1, 1); // red, green, blue, alpha
@@ -61,7 +61,7 @@
 		bmp.filters = [removeRedFilter];
 		stage.addChild(bmp);
 
-		bmp.cache(0, 0, img.width, img.height, 1, {useGL: "stage"});
+		bmp.cache(0, 0, img.width, img.height, 1, { useGL: "stage" });  // 与普通的context 2D filters使用方式不一样
 		bmp.x = 0;
 
 		// draw to the canvas:
