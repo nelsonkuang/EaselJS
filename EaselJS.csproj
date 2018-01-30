@@ -115,6 +115,8 @@
     <Content Include="dist\js\odoo.js" />
     <Content Include="dist\js\purejs_util_2015_12.min.js" />
     <Content Include="dist\js\setmeta_2016_v1.min.js" />
+    <Content Include="dried-fruit-game_origin.html" />
+    <Content Include="dried-fruit-game-end_origin.html" />
     <Content Include="examples\AlphaMaskReveal.html" />
     <Content Include="examples\APITest.html" />
     <Content Include="examples\BarGraph.html" />

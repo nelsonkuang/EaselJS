@@ -1,0 +1,384 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+		<meta content="yes" name="apple-mobile-web-app-capable">
+		<meta content="yes" name="apple-touch-fullscreen">
+		<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
+		<meta content="telephone=no,email=no" name="format-detection">
+		<title>海印优选—办公室零食大作战</title>
+		<meta name="description" content="海印优选—办公室零食大作战">
+		<meta name="keywords" content="海印优选—办公室零食大作战；">
+        <!--*判断设备设置DPI*-->
+        <script src="dist/js/pix2rem.min.js"></script>
+		<!--*公用样式*--> 
+        <link href="dist/css/base_2016_11.min.css" rel="stylesheet" type="text/css">
+        <link href="dist/css/dried-fruit-game.css" rel="stylesheet" />
+	</head>
+	<body>
+		<div class="pageview">
+			<div class="content con_box">
+				<!--*空白遮罩*-->
+				<div class="empty-bg-cover"></div>
+				<!--*透明灰背景*-->
+				<div class="grey-bg-cover"></div>
+				
+				<!--*游戏开始*-->
+				<div class="game-start-btn">
+					<a href="javascript:void(0)" class="game-start-btn__a" id="game-start-btn__a" title="开始游戏">开始游戏</a>
+				</div>
+				<!--*倒计时*-->
+				<div class="countdown" id="countdown">
+					<img src="dist/img/countdown_go.png"/>
+					<img src="dist/img/countdown_1.png"/>
+					<img src="dist/img/countdown_2.png"/>
+					<img src="dist/img/countdown_3.png"/>
+				</div>
+				
+				<!--游戏舞台-->
+				<div class="canvas-box">
+					<div class="start-btn" id="start-btn">开始游戏</div>
+					<div class="gameTime"></div>
+					<canvas id="canvas" width="720" height="1080" backgroundAlpha="0">alternate content</canvas>
+				</div>
+				
+				<!--*游戏音乐*-->
+				<div class="game-music">
+					<a href="javascript:void(0)" class="game-music__btn" id="game-music__btn" title="音乐"></a>
+				</div>
+				
+				<!--最后结束-->
+				<div class="popup score-board" id="score-board">
+					<div class="close"></div>
+					<div class="score-board__box">
+						<div class="tit">
+							<img src="dist/img/gameEnd_tit.png" title="谁比我能吃"/>
+						</div>
+						<div class="num-odoo"></div>
+						<div class="txt">
+							<p class="p_cmg">你吃了<em>99</em>枚草莓干<span>200</span></p>
+							<p class="p_smt">你吃了<em>99</em>枚水蜜桃干<span>100</span></p>
+							<p class="p_mgg">你吃了<em>99</em>枚芒果干<span>100</span></p>
+							<p class="p_zrg">你吃了<em>99</em>枚猪肉干<span>100</span></p>
+							<p class="p_zrt">你吃了<em>99</em>枚猪肉条<span>100</span></p>
+							<p class="p_xq">你吃了<em>99</em>个小强<span>1</span></p>
+						</div>
+						<div class="btn">
+							<a href="javascript:void(0)" class="game-end__btn1" id="game-end__btn1" title="提交分数">提交分数</a>
+							<a href="javascript:void(0)" class="game-end__btn2" id="game-end__btn2" data-action="retry" title="再玩一次">再玩一次</a>
+						</div>
+						
+						<div class="iconbox icon_1 animated"><img src="dist/img/gameEnd_icon1.png" title="芒果"/></div>
+						<div class="iconbox icon_2 animated"><img src="dist/img/gameEnd_icon2.png" title="草莓"/></div>
+						<div class="iconbox icon_3 animated"><img src="dist/img/gameEnd_icon3.png" title="猪头条"/></div>
+						<div class="iconbox icon_4 animated"><img src="dist/img/gameEnd_icon4.png" title="水蜜桃干"/></div>
+						<div class="iconbox icon_5 animated headShake infinite"><img src="dist/img/gameEnd_icon5.png" title="小强"/></div>
+					</div>
+				</div>
+				
+				
+				
+				<div class="audio-box">
+					<audio id="audio-bg" class="media-audio" src="dist/audio/gamebg.mp3" preload></audio ><!--游戏背景音乐-->
+					<audio id="audio-click-1" class="media-audio" src="dist/audio/clickO.mp3" preload></audio ><!--果干点击-->
+					<audio id="audio-click-2" class="media-audio" src="dist/audio/clickN.mp3" preload></audio ><!--小强点击-->
+					<audio id="audio-end" class="media-audio" src="dist/audio/gameEnd.mp3" preload></audio ><!--游戏结束-->
+					<audio id="audio-cd" class="media-audio" src="dist/audio/countdown.mp3" preload></audio ><!--倒计时-->
+				</div>
+				
+			</div>
+		</div>
+		<script src="dist/js/jquery-2.1.3.min.js"></script>
+		<script src="dist/js/create.js"></script>
+		<script src="dist/js/game.js"></script>
+		<script src="dist/js/odoo.js"></script>
+		<script type="text/javascript">
+			
+			var audiobg,play_bg,audiocd,play_cd,audioend,play_end,audiogame1,play_game1,audiogame2,play_game2;
+			var time_c;
+			var audioType;
+			var audioButton= true;
+			var num_all;//总计嫩
+			audiobgType=false,audiocdType=false,audioendType=false,audiogameType1 = false,audiogameType2 = false;
+			
+			
+			//开始游戏和再玩一次
+			$("#game-start-btn__a, .game-end__btn2").click(function () {
+				audioType=2;
+				tempHide();
+				countDown();
+			});
+			//提交分数
+			$(".score-board .close, .grey-bg-cover, #game-end__btn1").click(function () {
+	        	tempHide();
+	        	audioType=1;
+	        	console.log(num_all);//分数
+	        	window.location.href = "dried-fruit-game-end_origin.html";
+	        });
+			
+			//初始化
+			function startWeb(){
+				$('.empty-bg-cover').css('height',$(window).height());
+				$('.grey-bg-cover').show();
+				$('.game-start-btn').show();
+				audioType=1;
+				$('.game-music').show();
+				autoPlay_bg();
+			}
+			startWeb();
+			
+			function countDown(){
+				$('.game-start-btn').hide();
+				$('.countdown').show();
+				autoStop_bg();
+				time_c=4;
+				audioType=2;
+				timtGo();
+				autoPlay_cd();
+			}
+			
+			function timtGo(){
+				if(time_c > 0){
+					time_c--;
+					$('.countdown').find("img").hide();
+					$('.countdown').find("img:eq("+time_c+")").fadeIn(100);
+					setTimeout(function(){timtGo();},1000);
+				}else{
+					gameGo();
+				}
+			}
+			//倒计时结束 游戏开始
+			function gameGo(){
+				$('.countdown').hide();
+				$('.grey-bg-cover').hide();
+				autoStop_cd();
+				audioType=3;
+				$('.canvas-box').show(function(){
+					$('#start-btn').click();
+				});
+			}
+			//游戏结束触发
+			function gameEndgo(time_1,time_2,time_3,time_4,time_5,time_6){r_g=0;//次序：小强、草莓干、猪肉条、芒果干、水蜜桃干、猪肉干
+				//console.log('小强'+time_1+'/草莓干'+time_2+'/猪肉条'+time_3+'/芒果干'+time_4+'/水蜜桃干'+time_5+'/猪肉干'+time_6)
+				$('.canvas-box').hide();
+				audioType=4;
+				autoPlay_end();
+	         	setTimeout(function(){autoStop_end();},6000);
+	         	$('.p_cmg em').text(time_2);
+	         	$('.p_smt em').text(time_5);
+	         	$('.p_mgg em').text(time_4);
+	         	$('.p_zrg em').text(time_6);
+	         	$('.p_zrt em').text(time_3);
+	         	$('.p_xq em').text(time_1);
+	         	//计算总分
+	         	var num_cmg = parseInt(time_2 * 200) ;
+	         	var num_oth = parseInt((time_3+time_4+time_5+time_6) * 100);
+	         	var num_xq = parseInt(time_1);
+	         	num_all= num_cmg+num_oth+num_xq;
+	         	var txt_all =num_all.toString();
+	         	txt_all=txt_all.replace(/(\d{1})/g,'$1  ').replace(/\s*$/,'');
+				tempShow(txt_all);
+			}
+			
+			
+			//游戏结束弹出分数框动画效果
+	         function tempShow(numall){
+	         	console.log(numall);
+	         	var numA = numall;
+	         	$('.grey-bg-cover').fadeIn(200);
+	         	var popup_H = $('.score-board').height(),
+	         	    popup_C = parseFloat($('.score-board .close').height()/2),
+	         	    popup_top = parseFloat((popup_H+popup_C)/2);
+	         	$('.score-board').css('margin-top',-popup_top).fadeIn(500,function(){
+	         		odoo.default({ el:'.num-odoo',value:numA})
+	         		$('.icon_1').addClass('fadeInLeft');
+		         	setTimeout(function(){$('.icon_2').addClass('fadeInRight');},500);
+		         	setTimeout(function(){$('.icon_3').addClass('fadeInRight');},1000);
+		         	setTimeout(function(){$('.icon_4').addClass('fadeInLeft');},1400);	
+	         	});
+	         }
+	        //关闭分数框
+	        function tempHide(){
+	         	$('.score-board').hide().css('margin-top',"");
+	         	$('.num-odoo').empty();
+	         	$('.grey-bg-cover').hide(); 
+	         	$('.icon_1').removeClass('fadeInLeft');
+	         	$('.icon_2').removeClass('fadeInRight');
+	         	$('.icon_3').removeClass('fadeInRight');
+	         	$('.icon_4').removeClass('fadeInLeft');
+	        }
+	        
+	        //音乐开关——背景
+			$("#game-music__btn").click(function () {
+				console.log(audioType)
+	         	if($(this).hasClass('off')){
+	         		$(this).removeClass('off');
+	         		audioButton=true;
+	         		if(audioType == 1){
+	         			autoPlay_bg();
+	         		}else if(audioType == 2){
+	         			autoPlay_cd();
+	         		}else if(audioType == 3){
+	         			autoPlay_game();
+	         		}else{
+	         			autoPlay_end();
+	         		}	
+	         	}else{
+	         		$(this).addClass('off');
+	         		audioButton=false;
+	         		if(audioType == 1){
+	         			autoStop_bg();
+	         		}else if(audioType == 2){
+	         			autoStop_cd();
+	         		}else if(audioType == 3){
+	         			autoStop_game();
+	         		}else{
+	         			autoStop_end();
+	         		}
+	         		
+	         	}
+	        });
+			var audiobgType,audiocdType,audiogameType,audioendType
+			//背景音乐播放
+			function autoPlay_bg(){
+				if(audioButton){
+					audiobgType=true;
+					audiobg = document.getElementById("audio-bg"),
+					play_bg = function(){
+						audiobg.play();
+					    document.removeEventListener("touchstart",play_bg, false);// 针对自带浏览器
+					};
+				    audiobg.play();
+				    document.addEventListener("WeixinJSBridgeReady", play_bg, false);
+				    document.addEventListener("touchstart",play_bg, false);
+				    audiobg.addEventListener('ended',play_bg, false);
+				}else{
+					return false;
+				}				
+			}
+			//背景音乐停止
+			function autoStop_bg(){
+				console.log(audiobgType)
+				if(audiobgType){
+					audiobg.pause();
+			        audiobg.currentTime = 0.0; 
+			        document.removeEventListener("WeixinJSBridgeReady",play_bg, false);
+			        document.removeEventListener("touchstart",play_bg, false);
+			        audiobg.removeEventListener('ended',play_bg, false);
+			        audiobgType=false;
+				}	
+			}
+			
+			//倒计时音乐播放
+			function autoPlay_cd(){
+				if(audioButton){
+					audiocdType=true;
+					audiocd = document.getElementById("audio-cd"),
+					play_cd = function(){
+				   		audiocd.play();
+				    	//document.removeEventListener("touchstart",play_cd, false);// 针对自带浏览器
+				    };
+				    audiocd.play();
+				    document.addEventListener("WeixinJSBridgeReady", play_cd, false);
+				    //document.addEventListener("touchstart",play_cd, false);
+				}else{
+					return false;
+				}
+			}
+			//倒计时停止
+			function autoStop_cd(){
+				if(audiocdType){
+					audiocd.pause();
+			    	audiocd.currentTime = 0.0; 
+		         	document.removeEventListener("WeixinJSBridgeReady",play_cd, false);
+		         	//document.removeEventListener("touchstart",play_cd, false);
+		         	audiocdType=false;
+				}
+				
+			}
+			
+			//游戏音效1播放
+			function autoPlay_game1(){
+				if(audioButton){
+					audiogameType1=true;
+					audiogame1 = document.getElementById("audio-click-1"),
+				    play_game1 = function(){
+				    	audiogame1.play();
+				    	//document.removeEventListener("touchstart",play_game1, false);// 针对自带浏览器
+					};
+				    audiogame1.play();
+				    document.addEventListener("WeixinJSBridgeReady", play_game1, false);
+				   // document.addEventListener("touchstart",play_game1, false);
+				}else{
+					return false;
+				}
+			}
+			//游戏音效1播放
+			function autoStop_game1(){
+				if(audiogameType1){
+					audiogame1.pause();
+			    	audiogame1.currentTime = 0.0; 
+					document.removeEventListener("WeixinJSBridgeReady",play_game1, false);
+			    	//document.removeEventListener("touchstart",play_game1, false);
+			    	audiogameType1=false;
+				}
+			}
+			
+			//游戏音效2播放
+			function autoPlay_game2(){
+				if(audioButton){
+					audiogameType2=true;
+					audiogame2 = document.getElementById("audio-click-2"),
+				    play_game2 = function(){
+				    	audiogame2.play();
+				    	//document.removeEventListener("touchstart",play_game2, false);// 针对自带浏览器
+					};
+				    audiogame2.play();
+				    document.addEventListener("WeixinJSBridgeReady", play_game2, false);
+				   // document.addEventListener("touchstart",play_game2, false);
+				}else{
+					return false;
+				}
+			}
+			//游戏音效2播放
+			function autoStop_game2(){
+				if(audiogameType2){
+					audiogame2.pause();
+			    	audiogame2.currentTime = 0.0; 
+					document.removeEventListener("WeixinJSBridgeReady",play_game2, false);
+			    	//document.removeEventListener("touchstart",play_game2, false);
+			    	audiogameType2=false;
+				}
+			}
+			
+			
+			//结束音乐播放
+			function autoPlay_end(){
+				if(audioButton){
+					audioendType=true;
+					audioend = document.getElementById("audio-end"),
+				    play_end = function(){
+				    	audioend.play();
+				    	//document.removeEventListener("touchstart",play_end, false);// 针对自带浏览器
+					};
+				    audioend.play();
+				    document.addEventListener("WeixinJSBridgeReady", play_end, false);
+				    //document.addEventListener("touchstart",play_end, false);
+				}else{
+					return false;
+				}
+			}
+			//结束音乐播放
+			function autoStop_end(){
+				if(audioendType){
+					audioend.pause();
+			    	audioend.currentTime = 0.0; 
+					document.removeEventListener("WeixinJSBridgeReady",play_end, false);
+			    	//document.removeEventListener("touchstart",play_end, false);
+			    	audioendType=false;
+				}
+			}
+		</script>
+	</body>
+</html>
