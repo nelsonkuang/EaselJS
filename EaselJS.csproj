@@ -110,6 +110,7 @@
     <Content Include="dist\img\start_but_bg.png" />
     <Content Include="dist\js\create.js" />
     <Content Include="dist\js\function_2016_forgame.js" />
+    <Content Include="dist\js\dried_fruit_game_20180130.js" />
     <Content Include="dist\js\game.js" />
     <Content Include="dist\js\jquery-2.1.3.min.js" />
     <Content Include="dist\js\odoo.js" />
