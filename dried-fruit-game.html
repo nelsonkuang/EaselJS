@@ -125,18 +125,18 @@
             // $('#game-start-btn').show();
             audioType = 1;
             $('#game-music').show();
-            autoPlay_bg();
+            audioPlay_bg();
         }
         startWeb();
 
         function countDown() {
             $('#game-start-btn').hide();
             $('#countdown').show();
-            autoStop_bg();
+            audioStop_bg();
             time_c = 4;
             audioType = 2;
             timeGo();
-            autoPlay_cd();
+            audioPlay_cd();
         }
 
         function timeGo() {
@@ -153,7 +153,7 @@
         function gameGo() {
             $('#countdown').hide();
             $('#grey-bg-cover').hide();
-            autoStop_cd();
+            audioStop_cd();
             audioType = 3;
             $('#canvas-box').show(function () {
                 // $('#start-btn').click(); // 开始游戏
@@ -165,8 +165,8 @@
             //console.log('小强'+time_1+'/草莓干'+time_2+'/猪肉条'+time_3+'/芒果干'+time_4+'/水蜜桃干'+time_5+'/猪肉干'+time_6)
             $('#canvas-box').hide();
             audioType = 4;
-            autoPlay_end();
-            setTimeout(function () { autoStop_end(); }, 6000);
+            audioPlay_end();
+            setTimeout(function () { audioStop_end(); }, 6000);
             $('#score-board .p_cmg em').text(time_2);
             $('#score-board .p_smt em').text(time_5);
             $('#score-board .p_mgg em').text(time_4);
@@ -218,32 +218,32 @@
                 $(this).removeClass('off');
                 audioButton = true;
                 if (audioType == 1) {
-                    autoPlay_bg();
+                    audioPlay_bg();
                 } else if (audioType == 2) {
-                    autoPlay_cd();
+                    audioPlay_cd();
                 } else if (audioType == 3) {
-                    autoPlay_game();
+                    audioPlay_game();
                 } else {
-                    autoPlay_end();
+                    audioPlay_end();
                 }
             } else {
                 $(this).addClass('off');
                 audioButton = false;
                 if (audioType == 1) {
-                    autoStop_bg();
+                    audioStop_bg();
                 } else if (audioType == 2) {
-                    autoStop_cd();
+                    audioStop_cd();
                 } else if (audioType == 3) {
-                    autoStop_game();
+                    audioStop_game();
                 } else {
-                    autoStop_end();
+                    audioStop_end();
                 }
 
             }
         });
         var audiobgType, audiocdType, audiogameType, audioendType
         //背景音乐播放
-        function autoPlay_bg() {
+        function audioPlay_bg() {
             if (audioButton) {
                 audiobgType = true;
                 audiobg = document.getElementById("audio-bg"),
@@ -260,7 +260,7 @@
             }
         }
         //背景音乐停止
-        function autoStop_bg() {
+        function audioStop_bg() {
             console.log(audiobgType)
             if (audiobgType) {
                 audiobg.pause();
@@ -273,7 +273,7 @@
         }
 
         //倒计时音乐播放
-        function autoPlay_cd() {
+        function audioPlay_cd() {
             if (audioButton) {
                 audiocdType = true;
                 audiocd = document.getElementById("audio-cd"),
@@ -289,7 +289,7 @@
             }
         }
         //倒计时停止
-        function autoStop_cd() {
+        function audioStop_cd() {
             if (audiocdType) {
                 audiocd.pause();
                 audiocd.currentTime = 0.0;
@@ -301,7 +301,7 @@
         }
 
         //游戏音效1播放
-        function autoPlay_game1() {
+        function audioPlay_game1() {
             if (audioButton) {
                 audiogameType1 = true;
                 audiogame1 = document.getElementById("audio-click-1"),
@@ -317,7 +317,7 @@
             }
         }
         //游戏音效1播放
-        function autoStop_game1() {
+        function audioStop_game1() {
             if (audiogameType1) {
                 audiogame1.pause();
                 audiogame1.currentTime = 0.0;
@@ -328,7 +328,7 @@
         }
 
         //游戏音效2播放
-        function autoPlay_game2() {
+        function audioPlay_game2() {
             if (audioButton) {
                 audiogameType2 = true;
                 audiogame2 = document.getElementById("audio-click-2"),
@@ -344,7 +344,7 @@
             }
         }
         //游戏音效2播放
-        function autoStop_game2() {
+        function audioStop_game2() {
             if (audiogameType2) {
                 audiogame2.pause();
                 audiogame2.currentTime = 0.0;
@@ -356,7 +356,7 @@
 
 
         //播放结束音乐
-        function autoPlay_end() {
+        function audioPlay_end() {
             if (audioButton) {
                 audioendType = true;
                 audioend = document.getElementById("audio-end"),
@@ -372,7 +372,7 @@
             }
         }
         //结束音乐停止
-        function autoStop_end() {
+        function audioStop_end() {
             if (audioendType) {
                 audioend.pause();
                 audioend.currentTime = 0.0;
@@ -391,6 +391,7 @@
                 squatterSpriteSheetBuilder,
                 squatterContainer,
                 squatterImgFrames = [],
+                squatterYMovements = [],
                 gameTimeText;
             var scale = document.getElementsByTagName('html')[0].style.fontSize.replace('px', '') / 75;
 
@@ -406,14 +407,9 @@
             init();
 
             function init() {
-                if (location.search.match(/c2d/i)) { // 如果不支持GL强制使用context 2D
-                    // force it to use Context2D if c2d appears in the query string: ex. Squatters.html?c2d
-                    stage = new createjs.Stage("canvas");
-                } else {
-                    stage = new createjs.StageGL("canvas"); // 不然使用GL
-                    stage.setClearColor("#000");
-                    //stage.updateSimultaneousTextureCount(1);
-                }
+                stage = new createjs.Stage("canvas");
+                // enable touch interactions if supported on the current device:
+                createjs.Touch.enable(stage);
 
                 var queue = new createjs.LoadQueue(); // 创建资源加载队列
                 queue.on("complete", handleLoad, this);
@@ -447,12 +443,6 @@
                 stage.update(evt);
             }
 
-            function addSquatters() {
-                //var squatter = new createjs.Sprite(squatterSS, "run");
-                //squatter.on("mousedown", shakeSquatter, this); // 绑定每个人的点击事件
-                //resetSquatter(squatter);
-            }
-
             function shakeSquatter(evt) { // 爆星
                 var squatter = evt.target;
             }
@@ -460,6 +450,19 @@
             function resetSquatter(squatter) {
             }
 
+            function moveSquatterY(squatter, from, to, wait, duration) {
+                var ran = Math.random();
+                squatter.gotoAndStop(Math.floor(7 * ran));
+                return createjs.Tween
+                    .get(squatter, { loop: true, paused: false })
+                    .wait(wait + wait * ran)
+                    .to({ y: from }, duration)
+                    .wait(wait)
+                    .to({ y: to }, duration)
+                    .call(function () {
+                        squatter.gotoAndStop(Math.floor(7 * Math.random()));
+                    });
+            }
 
             function setupUI(queue) {
                 // background:
@@ -472,9 +475,9 @@
                 var timerBgBmp = new createjs.Bitmap(timerBgImg).set({ scale: scale, x: 10, y: 10 });
                 stage.addChild(timerBgBmp);
 
-                // 画遮罩用于显示果干
+                // 创建遮罩用于显示果干
                 var squatterMaskPositions = [
-                    [50, 400,160,160],
+                    [50, 400, 160, 160],
                     [50, 580, 160, 160],
                     [45, 760, 160, 160],
                     [280, 448, 160, 160],
@@ -486,8 +489,8 @@
                 ];
                 for (var i = 0; i < 9; i++) {
                     var squatterMask = new createjs.Shape();
-                    squatterMask.graphics.beginStroke('#fff').drawRect(squatterMaskPositions[i][0] * scale, squatterMaskPositions[i][1] * scale, squatterMaskPositions[i][2] * scale, squatterMaskPositions[i][3] * scale).endStroke();
-                    squatterMask.cache(0, 0, screenWidth, screenHeight);
+                    squatterMask.graphics
+                        .drawRect(squatterMaskPositions[i][0] * scale, squatterMaskPositions[i][1] * scale, squatterMaskPositions[i][2] * scale, squatterMaskPositions[i][3] * scale);
                     squatterMasks.push(squatterMask);
                 }
 
@@ -497,7 +500,7 @@
 
                 // 添加果干
                 var squatterPositions = [
-                    [20, 390],
+                    [20, 400],
                     [30, 580],
                     [20, 760],
                     [260, 443],
@@ -509,12 +512,13 @@
                 ];
                 for (var i = 0; i < 9; i++) {
                     var squatterSprite = new createjs.Sprite(squatterSpriteSheet, "squatters");
-                    squatterSprites.push(squatterSprite);
-                    squatterSprite.gotoAndStop(i%7);
                     squatterSprite.set({ x: squatterPositions[i][0] * scale, y: (squatterPositions[i][1] + 160) * scale });
-                    createjs.Tween.get(squatterSprite, { loop: true }).wait(1200).to({ y: squatterPositions[i][1] * scale }, 1000).wait(1200).to({ y: (squatterPositions[i][1] + 160) * scale }, 1000);
                     squatterContainer.addChild(squatterSprite);
-                    squatterSprite.mask = squatterMasks[i];
+                    squatterSprite.mask = squatterMasks[i]; // 为每个果干添加mask
+                    squatterSprites.push(squatterSprite); // 入栈用于测试
+
+                    var movementY = moveSquatterY(squatterSprite, squatterPositions[i][1] * scale, (squatterPositions[i][1] + 160) * scale, 600, 500); // 开始播放Y竖直方向动画
+                    squatterYMovements.push(movementY); // 入栈用于测试
                 }
 
                 // Game Time Countdown
