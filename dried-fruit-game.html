@@ -395,16 +395,16 @@
                 gameTimeText;
             var scale = document.getElementsByTagName('html')[0].style.fontSize.replace('px', '') / 75;
 
-            // 获得屏宽
+            // 获得屏宽高
             var screenWidth = $(window).width() > 750 ? 750 : $(window).width(),
                 screenHeight = $(window).height();
 
-            // 重设canvas宽高:
+            // 重设canvas宽高
             var canvas = document.getElementById("canvas");
             canvas.setAttribute('width', screenWidth); // 设置屏宽
             canvas.setAttribute('height', screenHeight); // 设置屏宽
 
-            init();
+            init(); // 起动
 
             function init() {
                 stage = new createjs.Stage("canvas");
@@ -433,34 +433,45 @@
             }
 
             function tick(evt) {
-                /******************增加人*******************/
-                // squatters:
-                for (var i = 0; i < 9; i++) {
-                    //var squatterSprite = squatterContainer.getChildAt(i);
-                    //squatterSprite.mask = squatterMasks[i];
-                }
+                /******************每帧监听事件处理*******************/
 
                 stage.update(evt);
             }
 
-            function shakeSquatter(evt) { // 爆星
-                var squatter = evt.target;
-            }
-
-            function resetSquatter(squatter) {
-            }
-
             function moveSquatterY(squatter, from, to, wait, duration) {
-                var ran = Math.random();
-                squatter.gotoAndStop(Math.floor(7 * ran));
-                return createjs.Tween
-                    .get(squatter, { loop: true, paused: false })
-                    .wait(wait + wait * ran)
+                var ran = Math.floor(7 * Math.random());
+                squatter.gotoAndStop(ran);
+
+                var movementY = createjs.Tween
+                    .get(squatter, { loop: true })
+                    .wait(wait * ran)
                     .to({ y: from }, duration)
                     .wait(wait)
                     .to({ y: to }, duration)
                     .call(function () {
-                        squatter.gotoAndStop(Math.floor(7 * Math.random()));
+                        ran = Math.floor(7 * Math.random());
+                        squatter.gotoAndStop(ran);
+                    });
+
+                squatterYMovements.push(movementY); // 入栈用于测试
+
+                squatter.on("mousedown", function (e) {
+                    movementY.paused = true;
+                    console.log('click: ' + ran);
+                    shakeSquatter(squatter, function () {
+                        movementY.paused = false;
+                    });
+                }, this); // 绑定每个果干的点击事件
+            }
+
+            function shakeSquatter(squatter, callback) {
+                var movementShake = createjs.Tween
+                    .get(squatter, { loop: false })
+                    .to({ scaleY: 0.9, alpha: 0 }, 100)
+                    .to({ scaleY: 1, alpha: 1 }, 100)
+                    .wait(400)
+                    .call(function () {
+                        callback();
                     });
             }
 
@@ -498,7 +509,7 @@
                 squatterContainer = new createjs.Container(squatterSpriteSheet);
                 stage.addChild(squatterContainer);
 
-                // 添加果干
+                // 在果干容器里面添加果干
                 var squatterPositions = [
                     [20, 400],
                     [30, 580],
@@ -517,8 +528,7 @@
                     squatterSprite.mask = squatterMasks[i]; // 为每个果干添加mask
                     squatterSprites.push(squatterSprite); // 入栈用于测试
 
-                    var movementY = moveSquatterY(squatterSprite, squatterPositions[i][1] * scale, (squatterPositions[i][1] + 160) * scale, 600, 500); // 开始播放Y竖直方向动画
-                    squatterYMovements.push(movementY); // 入栈用于测试
+                    moveSquatterY(squatterSprite, squatterPositions[i][1] * scale, (squatterPositions[i][1] + 160) * scale, 500, 500); // 开始播放Y竖直方向动画
                 }
 
                 // Game Time Countdown
@@ -533,9 +543,8 @@
                 squatterSpriteSheetBuilder = new createjs.SpriteSheetBuilder();
                 for (var i = 0; i < 6; i++) {
                     var img = queue.getResult('squatter_' + (i + 1));
-                    // squatterImgs.push(img);
                     var bmp = new createjs.Bitmap(img);
-                    var index = squatterSpriteSheetBuilder.addFrame(bmp, null, scale * 0.63, function (target, data) {}, i);
+                    var index = squatterSpriteSheetBuilder.addFrame(bmp, null, scale * 0.63, function (target, data) {}, i); // 0.63为调试最适合的大小
                     squatterImgFrames.push(index);
                 }
                 squatterSpriteSheetBuilder.addAnimation("squatters", squatterImgFrames, true, 8);
