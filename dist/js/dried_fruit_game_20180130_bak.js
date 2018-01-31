@@ -13,11 +13,7 @@
         squatterYMovements = [],
         shakeSquatterMovements = [],
         gameTimeText,
-        clock = 60000,
-        scores = [0, 0, 0, 0, 0, 0],
-        soundOff = false,
-        gameover = false;
-
+        clock = 60000;
     var scale = document.getElementsByTagName('html')[0].style.fontSize.replace('px', '') / 75;
 
     // 获得屏宽高
@@ -29,9 +25,9 @@
     canvas.setAttribute('width', screenWidth); // 设置屏宽
     canvas.setAttribute('height', screenHeight); // 设置屏宽
 
-    start(); // 起动
+    init(); // 起动
 
-    function start() {
+    function init() {
         stage = new createjs.Stage("canvas");
         // enable touch interactions if supported on the current device:
         createjs.Touch.enable(stage);
@@ -61,7 +57,6 @@
         setupUI(evt.target); // 设置初始UI界面
         createjs.Ticker.timingMode = createjs.Ticker.RAF; // 用requestAnimationFrame方式
         createjs.Ticker.on("tick", tick, this); // 每帧动画回调
-        playBgMusic();
     }
 
     function tick(evt) {
@@ -72,9 +67,7 @@
             gameTimeText.text = Math.floor(clock / 1000) + '.' + Math.floor(clock % 1000 / 100) + " s";
         } else {
             gameTimeText.text = 0 + " s";
-            if (!gameover) {
-                stopGame();
-            }
+            stopGame();
         }
 
 
@@ -92,54 +85,9 @@
             shakeSquatterMovements[i].paused = true;
             squatterSprites[i].removeAllEventListeners('mousedown');
         }
-        playGameOverMusic();
-        gameover = true;
-    }
-    function musicOn() {
-        soundOff = false;
-        playBgMusic();
-    }
-    function musicOff() {
-        createjs.Sound.stop();
-        soundOff = true;
-    }
-    function playBgMusic() {
-        if (!soundOff) {
-            createjs.Sound.play("game_bgm", { loop: -1 });
-        }
-    }
-    function playGameOverMusic() {
-        if (!soundOff) {
-            musicOff();
-            createjs.Sound.play("audio_end");
-        }
-    }
-    function playCountdownMusic() {
-        if (!soundOff) {
-            createjs.Sound.play("audio_countdown");
-        }
-    }
-    function playSuccessMusic() {
-        if (!soundOff) {
-            createjs.Sound.play("audio_ok");
-        }
-    }
-    function playFailureMusic() {
-        if (!soundOff) {
-            createjs.Sound.play("audio_no", { offset: 500 });
-        }
-    }
-    function getScores() {
-        return scores;
-    }
-    function getGameTime() {
-        return clock;
-    }
-    function setGameTime(time) {
-        clock = time;
     }
     function moveSquatterY(squatter, from, to, wait, duration) {
-        var ran = Math.floor(6 * Math.random()),
+        var ran = Math.floor(7 * Math.random()),
             isClicked = false; // 防止重复点击
         squatter.gotoAndStop(ran);
 
@@ -150,7 +98,7 @@
             .wait(wait)
             .to({ y: to }, duration)
             .call(function () {
-                ran = Math.floor(6 * Math.random());
+                ran = Math.floor(7 * Math.random());
                 squatter.gotoAndStop(ran);
                 isClicked = false;
             });
@@ -170,19 +118,10 @@
 
         squatter.on("mousedown", function () {
             if (!isClicked) { // 防止重复点击
-                // console.log('click: ' + ran);
+                console.log('click: ' + ran);
                 movementY.paused = true;
                 movementShake.paused = false;
                 movementShake.gotoAndPlay(0);
-                scores[ran]++;
-
-                if (ran != 3) {
-                    playSuccessMusic();
-                } else {
-                    playFailureMusic();
-                }
-
-                console.log(scores);
                 isClicked = true;
             }
         }, this); // 绑定每个果干的点击事件
@@ -268,13 +207,6 @@
         squatterSpriteSheet = squatterSpriteSheetBuilder.build(); // 构建spriteSheet
 
         //stage.addChild(new createjs.Bitmap(squatterSpriteSheet._images[0])).set({ x: 0, y: 150 }); // 测试整张输出
-    }
-
-    var DFGame = {
-        version: '1.0.1',
-        author: 'Nelson Kuang',
-        description: 'A Dried-Fruit-Hitting Game',
-
     }
 
 })(this);

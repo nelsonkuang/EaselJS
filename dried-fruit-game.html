@@ -37,7 +37,7 @@
             </div>
 
             <!--游戏舞台-->
-            <div class="canvas-box" id="canvas-box" style="display:block!important;">
+            <div class="canvas-box" id="canvas-box">
                 <canvas id="canvas" width="720" height="1080" backgroundalpha="0">alternate content</canvas>
             </div>
 
@@ -77,14 +77,21 @@
 
 
 
-            <div class="audio-box">
-                <audio id="audio-bg" class="media-audio" src="dist/audio/gamebg.mp3" preload></audio><!--游戏背景音乐-->
-                <audio id="audio-click-1" class="media-audio" src="dist/audio/clickO.mp3" preload></audio><!--果干点击-->
-                <audio id="audio-click-2" class="media-audio" src="dist/audio/clickN.mp3" preload></audio><!--小强点击-->
-                <audio id="audio-end" class="media-audio" src="dist/audio/gameEnd.mp3" preload></audio><!--游戏结束-->
-                <audio id="audio-cd" class="media-audio" src="dist/audio/countdown.mp3" preload></audio><!--倒计时-->
-            </div>
+ <!--         <div class="audio-box">
+                <audio id="audio-bg" class="media-audio" src="dist/audio/gamebg.mp3" preload></audio>
+                <audio id="audio-click-1" class="media-audio" src="dist/audio/clickO.mp3" preload></audio>
+                <audio id="audio-click-2" class="media-audio" src="dist/audio/clickN.mp3" preload></audio>
+                <audio id="audio-end" class="media-audio" src="dist/audio/gameEnd.mp3" preload></audio>
+                <audio id="audio-cd" class="media-audio" src="dist/audio/countdown.mp3" preload></audio>
+            </div>-->  
 
+        </div>
+        <!--加载中-->
+        <div id="spinner-box" class="spinner spinner-gritcode spinner-md">
+            <div class="spinner-wrapper">
+                <div class="spinner-circle"></div>
+                <div class="spinner-text">游戏加载中...</div>
+            </div>
         </div>
     </div>
     <script src="dist/js/jquery-2.1.3.min.js"></script>
@@ -97,292 +104,130 @@
     <script src="_assets/libs/soundjs-NEXT.min.js"></script>
     <script src="dist/js/dried_fruit_game_20180130.js"></script>
     <script type="text/javascript">
+        $(function () {
+            var time_c;
+            var num_all;//总计
 
-        var audiobg, play_bg, audiocd, play_cd, audioend, play_end, audiogame1, play_game1, audiogame2, play_game2;
-        var time_c;
-        var audioType;
-        var audioButton = true;
-        var num_all;//总计
-        audiobgType = false, audiocdType = false, audioendType = false, audiogameType1 = false, audiogameType2 = false;
-
-
-        //开始游戏和再玩一次
-        $("#game-start-btn__a, #game-end__btn2").click(function () {
-            audioType = 2;
-            hideScoreBoard();
-            countDown();
-        });
-        //提交分数
-        $("#score-board .close, #grey-bg-cover, #game-end__btn1").click(function () {
-            hideScoreBoard();
-            audioType = 1;
-            console.log(num_all);//分数
-            window.location.href = "dried-fruit-game-end.html";
-        });
-
-        //初始化
-        function startWeb() {
-            $('#empty-bg-cover').css('height', $(window).height());
-            // $('#grey-bg-cover').show();
-            // $('#game-start-btn').show();
-            audioType = 1;
-            $('#game-music').show();
-            audioPlay_bg();
-        }
-        startWeb();
-
-        function countDown() {
-            $('#game-start-btn').hide();
-            $('#countdown').show();
-            audioStop_bg();
-            time_c = 4;
-            audioType = 2;
-            timeGo();
-            audioPlay_cd();
-        }
-
-        function timeGo() {
-            if (time_c > 0) {
-                time_c--;
-                $('#countdown').find("img").hide();
-                $('#countdown').find("img:eq(" + time_c + ")").fadeIn(100);
-                setTimeout(function () { timeGo(); }, 1000);
-            } else {
-                gameGo();
-            }
-        }
-        //倒计时结束 游戏开始
-        function gameGo() {
-            $('#countdown').hide();
-            $('#grey-bg-cover').hide();
-            audioStop_cd();
-            audioType = 3;
-            $('#canvas-box').show(function () {
-                // $('#start-btn').click(); // 开始游戏
+            DFGame.onGameReady(function () {
+                $('#spinner-box').hide();
+                DFGame.start();
             });
-        }
-        //游戏结束触发
-        function gameEndgo(time_1, time_2, time_3, time_4, time_5, time_6) {
-            r_g = 0;//次序：小强、草莓干、猪肉条、芒果干、水蜜桃干、猪肉干
-            //console.log('小强'+time_1+'/草莓干'+time_2+'/猪肉条'+time_3+'/芒果干'+time_4+'/水蜜桃干'+time_5+'/猪肉干'+time_6)
-            $('#canvas-box').hide();
-            audioType = 4;
-            audioPlay_end();
-            setTimeout(function () { audioStop_end(); }, 6000);
-            $('#score-board .p_cmg em').text(time_2);
-            $('#score-board .p_smt em').text(time_5);
-            $('#score-board .p_mgg em').text(time_4);
-            $('#score-board .p_zrg em').text(time_6);
-            $('#score-board .p_zrt em').text(time_3);
-            $('#score-board .p_xq em').text(time_1);
-            //计算总分
-            var num_cmg = parseInt(time_2 * 200);
-            var num_oth = parseInt((time_3 + time_4 + time_5 + time_6) * 100);
-            var num_xq = parseInt(time_1);
-            num_all = num_cmg + num_oth + num_xq;
-            var txt_all = num_all.toString();
-            txt_all = txt_all.replace(/(\d{1})/g, '$1  ').replace(/\s*$/, '');
-            showScoreBoard(txt_all);
-        }
-
-
-        //游戏结束弹出分数框动画效果
-        function showScoreBoard(numall) {
-            console.log(numall);
-            var numA = numall;
-            $('#grey-bg-cover').fadeIn(200);
-            var popup_H = $('#score-board').height(),
-                popup_C = parseFloat($('#score-board .close').height() / 2),
-                popup_top = parseFloat((popup_H + popup_C) / 2);
-            $('#score-board').css('margin-top', -popup_top).fadeIn(500, function () {
-                odoo.default({ el: '#num-odoo', value: numA })
-                $('#score-board .icon_1').addClass('fadeInLeft');
-                setTimeout(function () { $('#score-board .icon_2').addClass('fadeInRight'); }, 500);
-                setTimeout(function () { $('#score-board .icon_3').addClass('fadeInRight'); }, 1000);
-                setTimeout(function () { $('#score-board .icon_4').addClass('fadeInLeft'); }, 1400);
+            DFGame.onGameOver(function () {
+                var scores = DFGame.getScores();
+                console.log(scores);
             });
-        }
-        //关闭分数框
-        function hideScoreBoard() {
-            $('#score-board').hide().css('margin-top', "");
-            $('#num-odoo').empty();
-            $('#grey-bg-cover').hide();
-            $('#score-board .icon_1').removeClass('fadeInLeft');
-            $('#score-board .icon_2').removeClass('fadeInRight');
-            $('#score-board .icon_3').removeClass('fadeInRight');
-            $('#score-board .icon_4').removeClass('fadeInLeft');
-        }
+            DFGame.init();
 
-        //音乐开关——背景
-        $("#game-music__btn").click(function () {
-            console.log(audioType)
-            if ($(this).hasClass('off')) {
-                $(this).removeClass('off');
-                audioButton = true;
-                if (audioType == 1) {
-                    audioPlay_bg();
-                } else if (audioType == 2) {
-                    audioPlay_cd();
-                } else if (audioType == 3) {
-                    audioPlay_game();
-                } else {
-                    audioPlay_end();
-                }
-            } else {
-                $(this).addClass('off');
-                audioButton = false;
-                if (audioType == 1) {
-                    audioStop_bg();
-                } else if (audioType == 2) {
-                    audioStop_cd();
-                } else if (audioType == 3) {
-                    audioStop_game();
-                } else {
-                    audioStop_end();
-                }
+            //开始游戏和再玩一次
+            $("#game-start-btn__a, #game-end__btn2").click(function () {
+                hideScoreBoard();
+                countDown();
+            });
+            //提交分数
+            $("#score-board .close, #grey-bg-cover, #game-end__btn1").click(function () {
+                hideScoreBoard();
+                window.location.href = "dried-fruit-game-end.html";
+            });
 
+            //初始化
+            function startWeb() {
+                $('#empty-bg-cover').css('height', $(window).height());
+                $('#grey-bg-cover').show();
+                $('#game-start-btn').show();
+                $('#game-music').show();
             }
+            startWeb();
+
+            function countDown() {
+                $('#game-start-btn').hide();
+                $('#countdown').show();
+                time_c = 4;         
+                timeGo();
+            }
+
+            function timeGo() {
+                if (time_c > 0) {
+                    time_c--;
+                    $('#countdown').find("img").hide();
+                    $('#countdown').find("img:eq(" + time_c + ")").fadeIn(100);
+                    setTimeout(function () { timeGo(); }, 1000);
+                } else {
+                    gameGo();
+                }
+            }
+            //倒计时结束 游戏开始
+            function gameGo() {
+                $('#countdown').hide();
+                $('#grey-bg-cover').hide();
+                $('#canvas-box').show(function () {
+                    // $('#start-btn').click(); // 开始游戏
+                });
+            }
+            //游戏结束触发
+            function gameEndgo(time_1, time_2, time_3, time_4, time_5, time_6) {
+                r_g = 0;//次序：小强、草莓干、猪肉条、芒果干、水蜜桃干、猪肉干
+                //console.log('小强'+time_1+'/草莓干'+time_2+'/猪肉条'+time_3+'/芒果干'+time_4+'/水蜜桃干'+time_5+'/猪肉干'+time_6)
+                $('#canvas-box').hide();
+                setTimeout(function () {
+                    // audioStop_end();
+                }, 6000);
+                $('#score-board .p_cmg em').text(time_2);
+                $('#score-board .p_smt em').text(time_5);
+                $('#score-board .p_mgg em').text(time_4);
+                $('#score-board .p_zrg em').text(time_6);
+                $('#score-board .p_zrt em').text(time_3);
+                $('#score-board .p_xq em').text(time_1);
+                //计算总分
+                var num_cmg = parseInt(time_2 * 200);
+                var num_oth = parseInt((time_3 + time_4 + time_5 + time_6) * 100);
+                var num_xq = parseInt(time_1);
+                num_all = num_cmg + num_oth + num_xq;
+                var txt_all = num_all.toString();
+                txt_all = txt_all.replace(/(\d{1})/g, '$1  ').replace(/\s*$/, '');
+                showScoreBoard(txt_all);
+            }
+
+
+            //游戏结束弹出分数框动画效果
+            function showScoreBoard(numall) {
+                console.log(numall);
+                var numA = numall;
+                $('#grey-bg-cover').fadeIn(200);
+                var popup_H = $('#score-board').height(),
+                    popup_C = parseFloat($('#score-board .close').height() / 2),
+                    popup_top = parseFloat((popup_H + popup_C) / 2);
+                $('#score-board').css('margin-top', -popup_top).fadeIn(500, function () {
+                    odoo.default({ el: '#num-odoo', value: numA })
+                    $('#score-board .icon_1').addClass('fadeInLeft');
+                    setTimeout(function () { $('#score-board .icon_2').addClass('fadeInRight'); }, 500);
+                    setTimeout(function () { $('#score-board .icon_3').addClass('fadeInRight'); }, 1000);
+                    setTimeout(function () { $('#score-board .icon_4').addClass('fadeInLeft'); }, 1400);
+                });
+            }
+            //关闭分数框
+            function hideScoreBoard() {
+                $('#score-board').hide().css('margin-top', "");
+                $('#num-odoo').empty();
+                $('#grey-bg-cover').hide();
+                $('#score-board .icon_1').removeClass('fadeInLeft');
+                $('#score-board .icon_2').removeClass('fadeInRight');
+                $('#score-board .icon_3').removeClass('fadeInRight');
+                $('#score-board .icon_4').removeClass('fadeInLeft');
+            }
+
+            //音乐开关——背景
+            $("#game-music__btn").click(function () {
+                var This = $(this);
+                if (This.hasClass('off')) {
+                    This.removeClass('off');
+
+                } else {
+                    This.addClass('off');
+
+                }
+            });
         });
-        var audiobgType, audiocdType, audiogameType, audioendType
-        //背景音乐播放
-        function audioPlay_bg() {
-            if (audioButton) {
-                audiobgType = true;
-                audiobg = document.getElementById("audio-bg"),
-                play_bg = function () {
-                    audiobg.play();
-                    document.removeEventListener("touchstart", play_bg, false);// 针对自带浏览器
-                };
-                audiobg.play();
-                document.addEventListener("WeixinJSBridgeReady", play_bg, false);
-                document.addEventListener("touchstart", play_bg, false);
-                audiobg.addEventListener('ended', play_bg, false);
-            } else {
-                return false;
-            }
-        }
-        //背景音乐停止
-        function audioStop_bg() {
-            console.log(audiobgType)
-            if (audiobgType) {
-                audiobg.pause();
-                audiobg.currentTime = 0.0;
-                document.removeEventListener("WeixinJSBridgeReady", play_bg, false);
-                document.removeEventListener("touchstart", play_bg, false);
-                audiobg.removeEventListener('ended', play_bg, false);
-                audiobgType = false;
-            }
-        }
 
-        //倒计时音乐播放
-        function audioPlay_cd() {
-            if (audioButton) {
-                audiocdType = true;
-                audiocd = document.getElementById("audio-cd"),
-                play_cd = function () {
-                    audiocd.play();
-                    //document.removeEventListener("touchstart",play_cd, false);// 针对自带浏览器
-                };
-                audiocd.play();
-                document.addEventListener("WeixinJSBridgeReady", play_cd, false);
-                //document.addEventListener("touchstart",play_cd, false);
-            } else {
-                return false;
-            }
-        }
-        //倒计时停止
-        function audioStop_cd() {
-            if (audiocdType) {
-                audiocd.pause();
-                audiocd.currentTime = 0.0;
-                document.removeEventListener("WeixinJSBridgeReady", play_cd, false);
-                //document.removeEventListener("touchstart",play_cd, false);
-                audiocdType = false;
-            }
-
-        }
-
-        //游戏音效1播放
-        function audioPlay_game1() {
-            if (audioButton) {
-                audiogameType1 = true;
-                audiogame1 = document.getElementById("audio-click-1"),
-                play_game1 = function () {
-                    audiogame1.play();
-                    //document.removeEventListener("touchstart",play_game1, false);// 针对自带浏览器
-                };
-                audiogame1.play();
-                document.addEventListener("WeixinJSBridgeReady", play_game1, false);
-                // document.addEventListener("touchstart",play_game1, false);
-            } else {
-                return false;
-            }
-        }
-        //游戏音效1播放
-        function audioStop_game1() {
-            if (audiogameType1) {
-                audiogame1.pause();
-                audiogame1.currentTime = 0.0;
-                document.removeEventListener("WeixinJSBridgeReady", play_game1, false);
-                //document.removeEventListener("touchstart",play_game1, false);
-                audiogameType1 = false;
-            }
-        }
-
-        //游戏音效2播放
-        function audioPlay_game2() {
-            if (audioButton) {
-                audiogameType2 = true;
-                audiogame2 = document.getElementById("audio-click-2"),
-                play_game2 = function () {
-                    audiogame2.play();
-                    //document.removeEventListener("touchstart",play_game2, false);// 针对自带浏览器
-                };
-                audiogame2.play();
-                document.addEventListener("WeixinJSBridgeReady", play_game2, false);
-                // document.addEventListener("touchstart",play_game2, false);
-            } else {
-                return false;
-            }
-        }
-        //游戏音效2播放
-        function audioStop_game2() {
-            if (audiogameType2) {
-                audiogame2.pause();
-                audiogame2.currentTime = 0.0;
-                document.removeEventListener("WeixinJSBridgeReady", play_game2, false);
-                //document.removeEventListener("touchstart",play_game2, false);
-                audiogameType2 = false;
-            }
-        }
-
-
-        //播放结束音乐
-        function audioPlay_end() {
-            if (audioButton) {
-                audioendType = true;
-                audioend = document.getElementById("audio-end"),
-                play_end = function () {
-                    audioend.play();
-                    //document.removeEventListener("touchstart",play_end, false);// 针对自带浏览器
-                };
-                audioend.play();
-                document.addEventListener("WeixinJSBridgeReady", play_end, false);
-                //document.addEventListener("touchstart",play_end, false);
-            } else {
-                return false;
-            }
-        }
-        //结束音乐停止
-        function audioStop_end() {
-            if (audioendType) {
-                audioend.pause();
-                audioend.currentTime = 0.0;
-                document.removeEventListener("WeixinJSBridgeReady", play_end, false);
-                //document.removeEventListener("touchstart",play_end, false);
-                audioendType = false;
-            }
-        }
     </script>
 </body>
 </html>
