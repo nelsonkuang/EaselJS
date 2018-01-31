@@ -37,7 +37,7 @@
             </div>
 
             <!--游戏舞台-->
-            <div class="canvas-box" id="canvas-box">
+            <div class="canvas-box" id="canvas-box" style="display:block!important;">
                 <canvas id="canvas" width="720" height="1080" backgroundalpha="0">alternate content</canvas>
             </div>
 
@@ -87,7 +87,7 @@
 
         </div>
         <!--加载中-->
-        <div id="spinner-box" class="spinner spinner-gritcode spinner-md">
+        <div id="spinner-box" class="spinner spinner-gritcode spinner-md" style="display:none;">
             <div class="spinner-wrapper">
                 <div class="spinner-circle"></div>
                 <div class="spinner-text">游戏加载中...</div>
@@ -104,19 +104,9 @@
     <script src="_assets/libs/soundjs-NEXT.min.js"></script>
     <script src="dist/js/dried_fruit_game_20180130.js"></script>
     <script type="text/javascript">
-        $(function () {
+        /*$(function () {
             var time_c;
             var num_all;//总计
-
-            DFGame.onGameReady(function () {
-                $('#spinner-box').hide();
-                DFGame.start();
-            });
-            DFGame.onGameOver(function () {
-                var scores = DFGame.getScores();
-                console.log(scores);
-            });
-            DFGame.init();
 
             //开始游戏和再玩一次
             $("#game-start-btn__a, #game-end__btn2").click(function () {
@@ -226,7 +216,7 @@
 
                 }
             });
-        });
+        });*/
 
     </script>
 </body>
