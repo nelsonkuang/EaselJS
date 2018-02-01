@@ -73,16 +73,6 @@
                 </div>
             </div>
 
-
-
- <!--         <div class="audio-box">
-                <audio id="audio-bg" class="media-audio" src="dist/audio/gamebg.mp3" preload></audio>
-                <audio id="audio-click-1" class="media-audio" src="dist/audio/clickO.mp3" preload></audio>
-                <audio id="audio-click-2" class="media-audio" src="dist/audio/clickN.mp3" preload></audio>
-                <audio id="audio-end" class="media-audio" src="dist/audio/gameEnd.mp3" preload></audio>
-                <audio id="audio-cd" class="media-audio" src="dist/audio/countdown.mp3" preload></audio>
-            </div>-->  
-
         </div>
         <!--加载中-->
         <div id="spinner-box" class="spinner spinner-gritcode spinner-md">
@@ -101,7 +91,9 @@
     <script src="dist/js/odoo.js"></script>
     <script type="text/javascript">
         $(function () {
-            var num_all;//总计
+            var num_all = 0; // 总计
+
+            /************ 初始化 *************/
 
             // 初始化游戏
             var game = new DFGame({
@@ -138,15 +130,15 @@
             });
 
 
-            //初始化
-            function setupStartUI() {
-                $('#empty-bg-cover').css('height', $(window).height());
-                $('#grey-bg-cover').show();
-                $('#game-start-btn').show();
-                $('#game-music').show();
-            }
-            setupStartUI();
+            // 初始化开始界面
+            $('#empty-bg-cover').css('height', $(window).height());
+            $('#grey-bg-cover').show();
+            $('#game-start-btn').show();
+            $('#game-music').show();
 
+            /************ 函数 *************/
+
+            // 显示倒计时
             function countDown() {
                 var time_c = 4;
                 var countdown = function () {
@@ -173,8 +165,8 @@
 
             //游戏结束弹出分数框动画效果
             function showScoreBoard() {
-                //次序：小强、草莓干、猪肉条、芒果干、水蜜桃干、猪肉干
-                //console.log('小强'+score_1+'/草莓干'+score_2+'/猪肉条'+score_3+'/芒果干'+score_4+'/水蜜桃干'+score_5+'/猪肉干'+score_6)
+                // 次序：小强、草莓干、猪肉条、芒果干、水蜜桃干、猪肉干
+                // console.log('小强'+score_1+'/草莓干'+score_2+'/猪肉条'+score_3+'/芒果干'+score_4+'/水蜜桃干'+score_5+'/猪肉干'+score_6)
                 var score_1 = game.currentScores[3],
                     score_2 = game.currentScores[0],
                     score_3 = game.currentScores[5],
@@ -189,7 +181,7 @@
                 $('#score-board .p_zrg em').text(score_6);
                 $('#score-board .p_zrt em').text(score_3);
                 $('#score-board .p_xq em').text(score_1);
-                //计算总分
+                // 计算总分
                 var num_cmg = parseInt(score_2 * 200);
                 var num_oth = parseInt((score_3 + score_4 + score_5 + score_6) * 100);
                 var num_xq = parseInt(score_1);
@@ -223,7 +215,7 @@
 
             /************绑定按钮*************/
 
-            //开始游戏和再玩一次
+            // 开始游戏 和 再玩一次
             $("#game-start-btn__a").click(function () {
                 hideScoreBoard();
                 countDown();
@@ -231,13 +223,13 @@
             $(" #game-end__btn2").click(function () {
                 location.reload();
             });
-            //提交分数
+            // 提交分数
             $("#score-board .close, #grey-bg-cover, #game-end__btn1").click(function () {
                 hideScoreBoard();
                 window.location.href = "dried-fruit-game-end.html";
             });
 
-            //音乐开关——背景
+            // 音乐开关
             $("#game-music__btn").click(function () {
                 var This = $(this);
                 if (This.hasClass('off')) {
