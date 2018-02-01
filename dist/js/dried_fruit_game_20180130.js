@@ -161,7 +161,7 @@
                         _this.playFailureMusic();
                     }
 
-                    console.log(scores);
+                    // console.log(scores);
                     isClicked = true;
                 }
             }, this); // 绑定每个果干的点击事件

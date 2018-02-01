@@ -109,6 +109,8 @@
     <Content Include="dist\img\person-ngS.png" />
     <Content Include="dist\img\start_but_bg.png" />
     <Content Include="dist\js\create.js" />
+    <Content Include="dist\js\dried_fruit_game_20180231.js" />
+    <Content Include="dist\js\dried_fruit_game_20180130_bak.js" />
     <Content Include="dist\js\function_2016_forgame.js" />
     <Content Include="dist\js\dried_fruit_game_20180130.js" />
     <Content Include="dist\js\game.js" />
