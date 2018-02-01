@@ -7,12 +7,10 @@
     <meta content="yes" name="apple-touch-fullscreen">
     <meta content="black-translucent" name="apple-mobile-web-app-status-bar-style">
     <meta content="telephone=no,email=no" name="format-detection">
-    <title>海印优选—办公室零食大作战</title>
+    <title>Nelson Kuang—办公室零食大作战</title>
     <meta name="description" content="海印优选—办公室零食大作战">
     <meta name="keywords" content="海印优选—办公室零食大作战；">
-    <!--*判断设备设置DPI*-->
     <script src="dist/js/pix2rem.min.js"></script>
-    <!--*公用样式*-->
     <link href="dist/css/base_2016_11.min.css" rel="stylesheet" type="text/css">
     <link href="dist/css/dried-fruit-game.css" rel="stylesheet" />
 </head>
@@ -37,12 +35,12 @@
             </div>
 
             <!--游戏舞台-->
-            <div class="canvas-box" id="canvas-box" style="display:block!important;">
+            <div class="canvas-box" id="canvas-box">
                 <canvas id="canvas" width="720" height="1080" backgroundalpha="0">alternate content</canvas>
             </div>
 
             <!--*游戏音乐*-->
-            <div class="game-music" id="game-music">
+            <div class="game-music" id="game-music" style="display:none;">
                 <a href="javascript:void(0)" class="game-music__btn" id="game-music__btn" title="音乐"></a>
             </div>
 
@@ -87,7 +85,7 @@
 
         </div>
         <!--加载中-->
-        <div id="spinner-box" class="spinner spinner-gritcode spinner-md" style="display:none;">
+        <div id="spinner-box" class="spinner spinner-gritcode spinner-md">
             <div class="spinner-wrapper">
                 <div class="spinner-circle"></div>
                 <div class="spinner-text">游戏加载中...</div>
@@ -95,99 +93,117 @@
         </div>
     </div>
     <script src="dist/js/jquery-2.1.3.min.js"></script>
-    <!--<script src="dist/js/create.js"></script>
-    <script src="dist/js/game.js"></script>
-    <script src="dist/js/odoo.js"></script>-->
     <script src="_assets/libs/preloadjs-NEXT.min.js"></script>
     <script src="lib/easeljs-NEXT.min.js"></script>
     <script src="_assets/libs/tweenjs-NEXT.min.js"></script>
     <script src="_assets/libs/soundjs-NEXT.min.js"></script>
     <script src="dist/js/dried_fruit_game_20180130.js"></script>
+    <script src="dist/js/odoo.js"></script>
     <script type="text/javascript">
-        /*$(function () {
-            var time_c;
+        $(function () {
             var num_all;//总计
 
-            //开始游戏和再玩一次
-            $("#game-start-btn__a, #game-end__btn2").click(function () {
-                hideScoreBoard();
-                countDown();
-            });
-            //提交分数
-            $("#score-board .close, #grey-bg-cover, #game-end__btn1").click(function () {
-                hideScoreBoard();
-                window.location.href = "dried-fruit-game-end.html";
+            // 初始化游戏
+            var game = new DFGame({
+                canvasId: 'canvas',
+                width: window.innerWidth > 750 ? 750 : window.innerWidth,
+                height: window.innerHeight,
+                resource: [
+                    { id: "squatter_1", src: "/dist/img/coupon_again_icon1.png" },
+                    { id: "squatter_2", src: "/dist/img/coupon_again_icon2.png" },
+                    { id: "squatter_3", src: "/dist/img/coupon_again_icon3.png" },
+                    { id: "squatter_4", src: "/dist/img/coupon_again_icon4.png" },
+                    { id: "squatter_5", src: "/dist/img/coupon_again_icon5.png" },
+                    { id: "squatter_6", src: "/dist/img/coupon_again_icon6.png" },
+                    { id: "game_bg", src: "/dist/img/gamebg.jpg" },
+                    { id: "timer_bg", src: "/dist/img/gameTime.png" },
+                    { id: "game_bgm", src: "/dist/audio/gamebg.mp3" },
+                    { id: "audio_ok", src: "/dist/audio/clickO.mp3" },
+                    { id: "audio_no", src: "/dist/audio/clickN.mp3" },
+                    { id: "audio_end", src: "/dist/audio/gameEnd.mp3" },
+                    { id: "audio_countdown", src: "/dist/audio/countdown.mp3" }
+                ],
+                gameRoundTime: 60000, // 60秒
+                soundOff: false, // 静音开始吗？
+                spriteWaitTime: 600, // 果干停留时间
+                spriteMoveDuration: 300, // 果干移动一次的时间 
+                remScale: document.getElementsByTagName('html')[0].style.fontSize.replace('px', '') / 75,
+                onReady: function () {
+                    $('#spinner-box').hide();
+                    $('#game-music').show();
+                }, // 游戏准备好时回调
+                onGameOver: function () {
+                    showScoreBoard();
+                }, // 游戏结结束时回调
             });
 
+
             //初始化
-            function startWeb() {
+            function setupStartUI() {
                 $('#empty-bg-cover').css('height', $(window).height());
                 $('#grey-bg-cover').show();
                 $('#game-start-btn').show();
                 $('#game-music').show();
             }
-            startWeb();
+            setupStartUI();
 
             function countDown() {
+                var time_c = 4;
+                var countdown = function () {
+                    if (time_c > 0) {
+                        time_c--;
+                        $('#countdown').find("img").hide();
+                        $('#countdown').find("img:eq(" + time_c + ")").fadeIn(100);
+                        setTimeout(function () { countdown(); }, 1000);
+                    } else {
+                        $('#countdown').hide();
+                        $('#grey-bg-cover').hide();
+                        $('#canvas-box').show(function () {
+                            game.start(); // 开始游戏
+                        });
+                    }
+                }
+
                 $('#game-start-btn').hide();
                 $('#countdown').show();
-                time_c = 4;         
-                timeGo();
-            }
-
-            function timeGo() {
-                if (time_c > 0) {
-                    time_c--;
-                    $('#countdown').find("img").hide();
-                    $('#countdown').find("img:eq(" + time_c + ")").fadeIn(100);
-                    setTimeout(function () { timeGo(); }, 1000);
-                } else {
-                    gameGo();
-                }
-            }
-            //倒计时结束 游戏开始
-            function gameGo() {
-                $('#countdown').hide();
-                $('#grey-bg-cover').hide();
-                $('#canvas-box').show(function () {
-                    // $('#start-btn').click(); // 开始游戏
-                });
-            }
-            //游戏结束触发
-            function gameEndgo(time_1, time_2, time_3, time_4, time_5, time_6) {
-                r_g = 0;//次序：小强、草莓干、猪肉条、芒果干、水蜜桃干、猪肉干
-                //console.log('小强'+time_1+'/草莓干'+time_2+'/猪肉条'+time_3+'/芒果干'+time_4+'/水蜜桃干'+time_5+'/猪肉干'+time_6)
-                $('#canvas-box').hide();
-                setTimeout(function () {
-                    // audioStop_end();
-                }, 6000);
-                $('#score-board .p_cmg em').text(time_2);
-                $('#score-board .p_smt em').text(time_5);
-                $('#score-board .p_mgg em').text(time_4);
-                $('#score-board .p_zrg em').text(time_6);
-                $('#score-board .p_zrt em').text(time_3);
-                $('#score-board .p_xq em').text(time_1);
-                //计算总分
-                var num_cmg = parseInt(time_2 * 200);
-                var num_oth = parseInt((time_3 + time_4 + time_5 + time_6) * 100);
-                var num_xq = parseInt(time_1);
-                num_all = num_cmg + num_oth + num_xq;
-                var txt_all = num_all.toString();
-                txt_all = txt_all.replace(/(\d{1})/g, '$1  ').replace(/\s*$/, '');
-                showScoreBoard(txt_all);
+                game.playCountdownMusic();
+                countdown();
             }
 
 
             //游戏结束弹出分数框动画效果
-            function showScoreBoard(numall) {
-                console.log(numall);
-                var numA = numall;
+            function showScoreBoard() {
+                //次序：小强、草莓干、猪肉条、芒果干、水蜜桃干、猪肉干
+                //console.log('小强'+score_1+'/草莓干'+score_2+'/猪肉条'+score_3+'/芒果干'+score_4+'/水蜜桃干'+score_5+'/猪肉干'+score_6)
+                var score_1 = game.currentScores[3],
+                    score_2 = game.currentScores[0],
+                    score_3 = game.currentScores[5],
+                    score_4 = game.currentScores[2],
+                    score_5 = game.currentScores[1],
+                    score_6 = game.currentScores[4];
+
+                $('#canvas-box').hide();
+                $('#score-board .p_cmg em').text(score_2);
+                $('#score-board .p_smt em').text(score_5);
+                $('#score-board .p_mgg em').text(score_4);
+                $('#score-board .p_zrg em').text(score_6);
+                $('#score-board .p_zrt em').text(score_3);
+                $('#score-board .p_xq em').text(score_1);
+                //计算总分
+                var num_cmg = parseInt(score_2 * 200);
+                var num_oth = parseInt((score_3 + score_4 + score_5 + score_6) * 100);
+                var num_xq = parseInt(score_1);
+                num_all = num_cmg + num_oth + num_xq;
+                var txt_all = num_all.toString();
+                txt_all = txt_all.replace(/(\d{1})/g, '$1  ').replace(/\s*$/, '');
+                // console.log(numall);
+                var numA = txt_all;
                 $('#grey-bg-cover').fadeIn(200);
                 var popup_H = $('#score-board').height(),
                     popup_C = parseFloat($('#score-board .close').height() / 2),
                     popup_top = parseFloat((popup_H + popup_C) / 2);
                 $('#score-board').css('margin-top', -popup_top).fadeIn(500, function () {
-                    odoo.default({ el: '#num-odoo', value: numA })
+                    odoo.default({ el: '#num-odoo', value: numA });
                     $('#score-board .icon_1').addClass('fadeInLeft');
                     setTimeout(function () { $('#score-board .icon_2').addClass('fadeInRight'); }, 500);
                     setTimeout(function () { $('#score-board .icon_3').addClass('fadeInRight'); }, 1000);
@@ -205,18 +221,35 @@
                 $('#score-board .icon_4').removeClass('fadeInLeft');
             }
 
+            /************绑定按钮*************/
+
+            //开始游戏和再玩一次
+            $("#game-start-btn__a").click(function () {
+                hideScoreBoard();
+                countDown();
+            });
+            $(" #game-end__btn2").click(function () {
+                location.reload();
+            });
+            //提交分数
+            $("#score-board .close, #grey-bg-cover, #game-end__btn1").click(function () {
+                hideScoreBoard();
+                window.location.href = "dried-fruit-game-end.html";
+            });
+
             //音乐开关——背景
             $("#game-music__btn").click(function () {
                 var This = $(this);
                 if (This.hasClass('off')) {
                     This.removeClass('off');
-
+                    game.musicOn();
                 } else {
                     This.addClass('off');
-
+                    game.musicOff();
                 }
             });
-        });*/
+
+        });
 
     </script>
 </body>
