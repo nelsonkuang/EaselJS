@@ -125,7 +125,9 @@
                     $('#game-music').show();
                 }, // 游戏准备好时回调
                 onGameOver: function () {
-                    showScoreBoard();
+                    setTimeout(function () {
+                        showScoreBoard();
+                    }, 2000);
                 }, // 游戏结结束时回调
             });
 
