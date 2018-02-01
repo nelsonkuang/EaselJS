@@ -52,6 +52,7 @@
             squatterYMovements = [],
             shakeSquatterMovements = [],
             gameTimeText,
+            gameScoreTips,
             scores = [0, 0, 0, 0, 0, 0],
             gameover = false;
 
@@ -115,6 +116,24 @@
             gameover = true;
         }
 
+        function showScore(type) {
+            var text = '+ ';
+            if (type == 3) {
+                text = '  + 1';
+                // text += 1;
+            } else if (type == 0) {
+                text += 200;
+            } else {
+                text += 100;
+            }
+            gameScoreTips.text = text;
+            var showTips = c.Tween
+                .get(gameScoreTips, { loop: false, override: true })
+                .to({ scale: 1.2, alpha: 0.8 }, 100)
+                .wait(500)
+                .to({ scale: 0.8, alpha: 0 }, 100);
+        }
+
         function moveSquatterY(squatter, from, to, wait, duration) {
             var ran = Math.floor(6 * Math.random()),
                 isClicked = false; // 防止重复点击
@@ -160,7 +179,7 @@
                     } else {
                         _this.playFailureMusic();
                     }
-
+                    showScore(ran);
                     // console.log(scores);
                     isClicked = true;
                 }
@@ -233,6 +252,15 @@
             gameTimeText.x = 125 * options.remScale;
             gameTimeText.y = 65 * options.remScale;
             stage.addChild(gameTimeText);
+
+            // Game Score Tips
+            gameScoreTips = new c.Text("+ 000");
+            gameScoreTips.font = 'bold 60px Arial';
+            gameScoreTips.color = '#fff';
+            // gameScoreTips.textAlign = 'center';
+            var tipsRect = gameScoreTips.getBounds();
+            gameScoreTips.set({ x: 355 * options.remScale, y: 225 * options.remScale, regX: tipsRect.width >> 1, regY: tipsRect.height >> 1, scale: 0.5, alpha: 0 });
+            stage.addChild(gameScoreTips);
         }
 
         function setupSpriteSheets(queue) {
