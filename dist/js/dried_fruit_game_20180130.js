@@ -34,6 +34,7 @@
             remScale: document.getElementsByTagName('html')[0].style.fontSize.replace('px', '') / 75,
             onReady: function () { },
             onGameOver: function () { },
+            onProgress: function () { },
         };
         options = this.extend(this.defaults, options);
         this.currentScores = [0, 0, 0, 0, 0, 0];
@@ -81,6 +82,10 @@
                 }, 16);
 
             }, this);
+
+            queue.on('progress', function (evt) {
+                options.onProgress && options.onProgress(evt.progress);
+            });
 
             queue.loadManifest(options.resource, true);
         }

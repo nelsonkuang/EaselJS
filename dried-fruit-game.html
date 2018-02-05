@@ -78,7 +78,7 @@
         <div id="spinner-box" class="spinner spinner-gritcode spinner-md">
             <div class="spinner-wrapper">
                 <div class="spinner-circle"></div>
-                <div class="spinner-text">游戏加载中...</div>
+                <div class="spinner-text">游戏加载中 <strong>0 %</strong></div>
             </div>
         </div>
     </div>
@@ -129,6 +129,9 @@
                         showScoreBoard();
                     }, 2000);
                 }, // 游戏结结束时回调
+                onProgress: function (progress) { // 显示加载进度
+                    document.querySelector('#spinner-box .spinner-text strong').innerText = parseInt(progress * 100) + ' %';
+                }
             });
 
 
